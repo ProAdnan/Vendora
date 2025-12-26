@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products | Vendora</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="../assets/css/style.css" rel="stylesheet">
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg bg-white sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href=".././index.php">Vendora.</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navP">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navP">
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <li class="nav-item"><a class="nav-link active" href="products.php">Products</a></li>
+                    <li class="nav-item"><a class="nav-link" href=".././index.php#services">Services</a></li>
+                    <li class="nav-item"><a class="nav-link" href="./cart.php"><i class="bi bi-cart3 fs-5"></i> <span
+                                class="badge bg-danger rounded-pill custom-badge">2</span></a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container py-5">
+        <div class="row">
+            <!-- Sidebar Filters -->
+            <div class="col-lg-3 mb-4">
+                <div class="filter-panel">
+                    <h5 class="fw-bold mb-3">Search</h5>
+                    <div class="input-group mb-4">
+                        <input type="text" class="form-control" placeholder="Search product...">
+                        <button class="btn btn-primary-custom"><i class="bi bi-search"></i></button>
+                    </div>
+
+                    <h5 class="fw-bold mb-3">Categories</h5>
+                    <ul class="list-unstyled mb-4">
+                        <li class="mb-2"><a href="#" class="text-decoration-none text-dark fw-medium">All Products</a>
+                        </li>
+                        <li class="mb-2"><a href="#" class="text-decoration-none text-muted">Electronics</a></li>
+                        <li class="mb-2"><a href="#" class="text-decoration-none text-muted">Fashion</a></li>
+                        <li class="mb-2"><a href="#" class="text-decoration-none text-muted">Home & Garden</a></li>
+                        <li class="mb-2"><a href="#" class="text-decoration-none text-muted">Sports</a></li>
+                    </ul>
+
+                    <h5 class="fw-bold mb-3">Price Range</h5>
+                    <input type="range" class="form-range" id="priceRange" min="0" max="1000">
+                    <div class="d-flex justify-content-between small text-muted">
+                        <span>$0</span>
+                        <span>$1000+</span>
+                    </div>
+
+                    <h5 class="fw-bold my-3">Rating</h5>
+                    <div class="d-flex flex-column gap-1">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="r5">
+                            <label class="form-check-label text-warning" for="r5"><i class="bi bi-star-fill"></i><i
+                                    class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i
+                                    class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i></label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="r4">
+                            <label class="form-check-label text-warning" for="r4"><i class="bi bi-star-fill"></i><i
+                                    class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i
+                                    class="bi bi-star-fill"></i></label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product Grid -->
+            <div class="col-lg-9">
+                <div class="row g-4">
+                    <!-- Item 1 -->
+                    <div class="col-md-4">
+                        <div class="card card-custom h-100">
+                            <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=400"
+                                class="card-img-top" alt="Product">
+                            <div class="card-body d-flex flex-column">
+                                <h5 class="card-title text-truncate">Nike Air Red</h5>
+                                <div class="mb-2 text-warning small">
+                                    <i class="bi bi-star-fill"></i> 4.5
+                                </div>
+                                <div class="mt-auto d-flex justify-content-between align-items-center">
+                                    <span class="price-text">$120.00</span>
+                                    <a href="./product-details.php" class="btn btn-sm btn-outline-custom">View</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    
+                </div>
+
+                <!-- Pagination
+                <nav class="mt-5">
+                    <ul class="pagination justify-content-center">
+                        <li class="page-item disabled"><a class="page-link" href="#">Prev</a></li>
+                        <li class="page-item active"><a class="page-link bg-primary-custom border-primary-custom"
+                                href="#">1</a></li>
+                        <li class="page-item"><a class="page-link text-primary-custom" href="#">2</a></li>
+                        <li class="page-item"><a class="page-link text-primary-custom" href="#">3</a></li>
+                        <li class="page-item"><a class="page-link text-primary-custom" href="#">Next</a></li>
+                    </ul>
+                </nav> -->
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | Vendora</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="../assets/css/style.css" rel="stylesheet">
+    <style>
+        body {
+            height: 100vh;
+            overflow: hidden;
+            background-color: white;
+        }
+
+        .login-split-img {
+            height: 100vh;
+            object-fit: cover;
+            width: 100%;
+        }
+
+        .login-container {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            overflow-y: auto;
+        }
+
+        .login-form-wrapper {
+            width: 100%;
+            max-width: 400px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="row g-0 h-100">
+        <!-- Side Image -->
+        <div class="col-lg-6 d-none d-lg-block">
+            <img src="https://images.unsplash.com/photo-1555529771-835f59fc5efe?q=80&w=1000&auto=format&fit=crop"
+                alt="Shopping" class="login-split-img">
+            <div class="position-absolute top-0 start-0 p-4 text-white">
+                <h3 class="fw-bold">Vendora.</h3>
+            </div>
+        </div>
+
+        <!-- Login Form -->
+        <div class="col-lg-6 login-container">
+            <div class="login-form-wrapper">
+                <div class="text-center mb-4">
+                    <h2 class="fw-bold">Welcome Back</h2>
+                    <p class="text-muted">Please enter your details to sign in.</p>
+                </div>
+
+                <form action="profile.html"> <!-- Simulating login -->
+                    <div class="mb-3">
+                        <label for="email" class="form-label text-muted small fw-bold">Email Address</label>
+                        <input type="email" class="form-control" id="email" placeholder="name@example.com" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="password" class="form-label text-muted small fw-bold">Password</label>
+                        <input type="password" class="form-control" id="password" placeholder="••••••••" required>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="remember">
+                            <label class="form-check-label small" for="remember">Remember me</label>
+                        </div>
+                        <a href="#" class="small text-primary-custom text-decoration-none">Forgot password?</a>
+                    </div>
+                    <button type="submit" class="btn btn-primary-custom w-100 mb-3">Sign In</button>
+
+                    <div class="text-center">
+                        <span class="text-muted small">Don't have an account? </span>
+                        <a href="./signup.php" class="small fw-bold text-primary-custom">Sign up</a>
+                    </div>
+                </form>
+
+                <div class="mt-5 text-center">
+                    <a href="./../index.php" class="text-muted small text-decoration-none"><i
+                            class="bi bi-arrow-left me-1"></i> Back to Home</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
