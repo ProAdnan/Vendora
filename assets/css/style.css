@@ -1,15 +1,10 @@
-/* 
-   Vendora E-Commerce Theme 
-   Soft, Modern, Professional
-*/
-
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
 :root {
     --primary-color: #4361ee;
     --primary-hover: #3f37c9;
     --accent-color: #f72585;
-    /* Used sparingly for CRITICAL CTAs */
+
     --text-dark: #2b2d42;
     --text-muted: #8d99ae;
     --bg-light: #f8f9fa;
@@ -35,7 +30,6 @@ a:hover {
     color: var(--primary-color);
 }
 
-/* Utilities */
 .text-primary-custom {
     color: var(--primary-color);
 }
@@ -75,7 +69,6 @@ a:hover {
     color: white;
 }
 
-/* Navbar */
 .navbar {
     background-color: white;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
@@ -99,7 +92,6 @@ a:hover {
     color: var(--primary-color) !important;
 }
 
-/* Hero Section */
 .hero-section {
     position: relative;
     padding: 80px 0;
@@ -122,7 +114,6 @@ a:hover {
     max-width: 600px;
 }
 
-/* Cards */
 .card-custom {
     background: white;
     border: none;
@@ -144,7 +135,6 @@ a:hover {
     background-color: #f0f0f0;
 }
 
-/* Services */
 .service-card {
     text-align: center;
     padding: 2rem;
@@ -159,7 +149,6 @@ a:hover {
     margin-bottom: 1rem;
 }
 
-/* Auth Pages */
 .auth-card {
     max-width: 450px;
     width: 100%;
@@ -178,7 +167,6 @@ a:hover {
     justify-content: center;
 }
 
-/* Product List */
 .filter-panel {
     background: white;
     padding: 1.5rem;
@@ -192,7 +180,6 @@ a:hover {
     color: var(--primary-color);
 }
 
-/* Footer */
 footer {
     background-color: white;
     padding: 60px 0 30px;
@@ -208,7 +195,7 @@ footer {
     display: inline-block;
 }
 
-/* Sidebar for Admin */
+/* for Admin */
 .sidebar {
     min-height: 100vh;
     background: white;
@@ -233,7 +220,6 @@ footer {
     text-align: center;
 }
 
-/* Utilities */
 .rating-stars {
     color: #ffc107;
 }
@@ -243,6 +229,7 @@ footer {
 }
 
 /* Form Controls */
+
 .form-control {
     padding: 12px 16px;
     border-radius: 8px;
