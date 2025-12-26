@@ -2,6 +2,11 @@
 
 session_start();
 
+/* temporary*/
+
+$_SESSION["user_type"] = "not yet";
+
+
 ?>
 
 
