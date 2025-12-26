@@ -4,7 +4,7 @@ session_start();
 
 /* temporary*/
 
-$_SESSION["user_type"] = "not yet";
+$_SESSION["user_type"] = "not yet";/*when login in,after login store in settion,and come here and delete this value, */
 
 
 ?>
@@ -33,19 +33,19 @@ $_SESSION["user_type"] = "not yet";
     if ($_SESSION["user_type"] == "admin") {
 
 
-        include 'admin_nav.php';
+        include './includes/admin_nav.php';
 
 
     } elseif ($_SESSION["user_type"] == "user") {
 
 
-        include 'user_nav.php';
+        include './includes/user_nav.php';
 
 
     } else {
 
 
-        include 'guest_nav.php';
+        include './includes/guest_nav.php';
 
 
     }
@@ -244,42 +244,15 @@ $_SESSION["user_type"] = "not yet";
         </div>
     </section>
 
-    <!-- Footer -->
-    <footer id="contact">
-        <div class="container">
-            <div class="row g-4">
-                <div class="col-md-4">
-                    <a href="index.html" class="footer-logo">Vendora.</a>
-                    <p class="text-muted">Your one-stop destination for quality products. Shop smart, live better.</p>
-                    <div class="d-flex gap-3">
-                        <a href="#" class="text-muted"><i class="bi bi-facebook fs-5"></i></a>
-                        <a href="#" class="text-muted"><i class="bi bi-twitter fs-5"></i></a>
-                        <a href="#" class="text-muted"><i class="bi bi-instagram fs-5"></i></a>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <h6 class="fw-bold mb-3">Quick Links</h6>
-                    <ul class="list-unstyled text-muted">
-                        <li class="mb-2"><a href="#">About Us</a></li>
-                        <li class="mb-2"><a href="#">Privacy Policy</a></li>
-                        <li class="mb-2"><a href="#">Terms & Conditions</a></li>
-                        <li class="mb-2"><a href="#">FAQ</a></li>
-                    </ul>
-                </div>
-                <div class="col-md-4">
-                    <h6 class="fw-bold mb-3">Contact</h6>
-                    <ul class="list-unstyled text-muted">
-                        <li class="mb-2"><i class="bi bi-geo-alt me-2"></i> 123 Market Street, Suite 400</li>
-                        <li class="mb-2"><i class="bi bi-envelope me-2"></i> support@vendora.com</li>
-                        <li class="mb-2"><i class="bi bi-telephone me-2"></i> +1 (555) 123-4567</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="border-top mt-5 pt-4 text-center text-muted small">
-                &copy; 2025 Vendora Inc. All rights reserved.
-            </div>
-        </div>
-    </footer>
+
+
+
+    <?php
+
+    include './includes/footer.php';
+
+    ?>
+
 
     <!-- Bootstrap Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
