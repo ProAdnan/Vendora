@@ -1,2 +1,0 @@
-# Vendora
-E-commecre application
