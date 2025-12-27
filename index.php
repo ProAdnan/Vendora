@@ -1,11 +1,31 @@
+<?php
+
+session_start();
+
+require_once __DIR__ . './classes/Database.php';
+require_once __DIR__ . './classes/Product.php';
 
 
+
+$product = new Product();
+
+
+$stmt = $product->readAll();
+
+
+$num = $stmt->rowCount();
+
+
+
+
+
+?>
 
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-     <?php include './includes/head.php'; ?>
+    <?php include './includes/head.php'; ?>
 
 </head>
 
@@ -13,31 +33,135 @@
 
 
     <?php
-if (session_status() == PHP_SESSION_NONE) {
-    session_start();
-}
-
-    if (isset($_SESSION["user_type"]) && $_SESSION["user_type"] == "admin") {
 
 
-        include './includes/admin_nav.php';
+    if (isset($_SESSION["user_type"])) {
+
+        if ($_SESSION["user_type"] == "admin") {
+
+            ?>
+
+            <nav class="navbar navbar-expand-lg sticky-top">
+                <div class="container">
+                    <a class="navbar-brand" href="./index.php">Vendora.</a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAdmin">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+
+                    <div class="collapse navbar-collapse" id="navbarNavAdmin">
+                        <ul class="navbar-nav ms-auto align-items-center">
+                            <li class="nav-item"><a class="nav-link" href="./pages/products.php">Products</a></li>
+                            <li class="nav-item"><a class="nav-link" href="#services">Services</a></li>
+                            <li class="nav-item ms-lg-3">
+                                <a href="./pages/admin_dashboard.php" class="btn btn-primary-custom">Dashboard</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
 
 
-    } elseif (isset($_SESSION["user_type"]) && $_SESSION["user_type"] == "user") {
+            <?php
+        } elseif ($_SESSION["user_type"] == "user") {
 
 
-        include './includes/user_nav.php';
 
 
-    } else {
+
+            ?>
+            <nav class="navbar navbar-expand-lg sticky-top">
+                <div class="container">
+                    <a class="navbar-brand" href="./index.php">Vendora.</a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavUser">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+
+                    <div class="collapse navbar-collapse" id="navbarNavUser">
+                        <ul class="navbar-nav ms-auto align-items-center">
+                            <li class="nav-item"><a class="nav-link" href="./pages/products.php">Products</a></li>
+                            <li class="nav-item"><a class="nav-link" href="#services">Services</a></li>
+                            <li class="nav-item"><a class="nav-link" href="#contact">Contact Us</a></li>
+                            <li class="nav-item ms-lg-3 dropdown">
+                                <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="userDropdown"
+                                    role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="bi bi-person-circle fs-4 me-2"></i>
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                                    <li><a class="dropdown-item" href="./pages/profile.php">Profile</a></li>
+                                    <li><a class="dropdown-item" href="./pages/orders.php">My Cart</a></li>
+                                    <li>
+                                        <hr class="dropdown-divider">
+                                    </li>
+                                    <li><a class="dropdown-item text-danger" href="./pages/loginProcess.php">Logout</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
 
 
-        include './includes/guest_nav.php';
+            <?php
 
+        } else { ?>
+
+
+
+            <nav class="navbar navbar-expand-lg sticky-top">
+                <div class="container">
+                    <a class="navbar-brand" href="./index.php">Vendora.</a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+
+                    <div class="collapse navbar-collapse" id="navbarNav">
+                        <ul class="navbar-nav ms-auto align-items-center">
+                            <li class="nav-item"><a class="nav-link" href="./pages/products.php">Products</a></li>
+                            <li class="nav-item"><a class="nav-link" href="#services">Services</a></li>
+                            <li class="nav-item"><a class="nav-link" href="#contact">Contact Us</a></li>
+                            <li class="nav-item ms-lg-3">
+                                <a href="./pages/login.php" class="btn btn-outline-custom me-2">Login</a>
+                                <a href="./pages/signup.php" class="btn btn-primary-custom">Sign Up</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+
+            <?php
+        }
+
+
+        ?>
+
+
+        <?php
+    } else { ?>
+
+
+        <nav class="navbar navbar-expand-lg sticky-top">
+            <div class="container">
+                <a class="navbar-brand" href="./index.php">Vendora.</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto align-items-center">
+                        <li class="nav-item"><a class="nav-link" href="./pages/products.php">Products</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#services">Services</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#contact">Contact Us</a></li>
+                        <li class="nav-item ms-lg-3">
+                            <a href="./pages/login.php" class="btn btn-outline-custom me-2">Login</a>
+                            <a href="./pages/signup.php" class="btn btn-primary-custom">Sign Up</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    <?php
 
     }
-
-
 
     ?>
 
@@ -155,7 +279,8 @@ if (session_status() == PHP_SESSION_NONE) {
                             <h5 class="card-title text-truncate">Nike Air Red</h5>
                             <div class="d-flex justify-content-between align-items-center mt-3">
                                 <span class="fw-bold text-primary-custom">$120.00</span>
-                                <a href="./pages/product-details.php" class="btn btn-sm btn-primary-custom rounded-pill"><i
+                                <a href="./pages/product-details.php"
+                                    class="btn btn-sm btn-primary-custom rounded-pill"><i
                                         class="bi bi-bag-plus"></i></a>
                             </div>
                         </div>
@@ -177,7 +302,8 @@ if (session_status() == PHP_SESSION_NONE) {
                             <h5 class="card-title text-truncate">Premium Headphones</h5>
                             <div class="d-flex justify-content-between align-items-center mt-3">
                                 <span class="fw-bold text-primary-custom">$250.00</span>
-                                <a href="./pages/product-details.php" class="btn btn-sm btn-primary-custom rounded-pill"><i
+                                <a href="./pages/product-details.php"
+                                    class="btn btn-sm btn-primary-custom rounded-pill"><i
                                         class="bi bi-bag-plus"></i></a>
                             </div>
                         </div>
@@ -199,7 +325,8 @@ if (session_status() == PHP_SESSION_NONE) {
                             <h5 class="card-title text-truncate">Classic Watch</h5>
                             <div class="d-flex justify-content-between align-items-center mt-3">
                                 <span class="fw-bold text-primary-custom">$180.00</span>
-                                <a href="./pages/product-details.php" class="btn btn-sm btn-primary-custom rounded-pill"><i
+                                <a href="./pages/product-details.php"
+                                    class="btn btn-sm btn-primary-custom rounded-pill"><i
                                         class="bi bi-bag-plus"></i></a>
                             </div>
                         </div>
@@ -221,7 +348,8 @@ if (session_status() == PHP_SESSION_NONE) {
                             <h5 class="card-title text-truncate">Smart Play Console</h5>
                             <div class="d-flex justify-content-between align-items-center mt-3">
                                 <span class="fw-bold text-primary-custom">$399.00</span>
-                                <a href="./pages/product-details.php" class="btn btn-sm btn-primary-custom rounded-pill"><i
+                                <a href="./pages/product-details.php"
+                                    class="btn btn-sm btn-primary-custom rounded-pill"><i
                                         class="bi bi-bag-plus"></i></a>
                             </div>
                         </div>

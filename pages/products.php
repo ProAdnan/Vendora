@@ -1,3 +1,33 @@
+<?php
+session_start();
+
+require_once __DIR__ . './../classes/Database.php';
+require_once __DIR__ . './../classes/Product.php';
+
+
+
+$product = new Product();
+
+
+$stmt = $product->readAll();
+
+$stmt2 = $product->read_all_category();
+
+
+$num = $stmt->rowCount();
+$num2 = $stmt2->rowCount();
+
+
+
+
+?>
+
+
+
+
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -7,28 +37,44 @@
     <title>Products | Vendora</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
-    <link href="../assets/css/style.css" rel="stylesheet">
+    <link href="./../assets/css/style.css" rel="stylesheet">
 </head>
 
 <body>
 
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg bg-white sticky-top">
-        <div class="container">
-            <a class="navbar-brand" href=".././index.php">Vendora.</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navP">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navP">
-                <ul class="navbar-nav ms-auto align-items-center">
-                    <li class="nav-item"><a class="nav-link active" href="products.php">Products</a></li>
-                    <li class="nav-item"><a class="nav-link" href=".././index.php#services">Services</a></li>
-                    <li class="nav-item"><a class="nav-link" href="./cart.php"><i class="bi bi-cart3 fs-5"></i> <span
-                                class="badge bg-danger rounded-pill custom-badge">2</span></a></li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+    <?php
+
+    if (isset($_SESSION["user_type"])) {
+
+        if ($_SESSION["user_type"] == "admin") {
+
+
+            include './includes/admin_nav.php';
+
+
+        } elseif ($_SESSION["user_type"] == "user") {
+
+
+            include './includes/user_nav.php';
+
+
+        } else {
+
+
+            include './includes/guest_nav.php';
+
+
+        }
+
+    } else {
+
+        include './../includes/guest_nav.php';
+
+    }
+
+
+    ?>
+
 
     <div class="container py-5">
         <div class="row">
@@ -45,10 +91,27 @@
                     <ul class="list-unstyled mb-4">
                         <li class="mb-2"><a href="#" class="text-decoration-none text-dark fw-medium">All Products</a>
                         </li>
-                        <li class="mb-2"><a href="#" class="text-decoration-none text-muted">Electronics</a></li>
-                        <li class="mb-2"><a href="#" class="text-decoration-none text-muted">Fashion</a></li>
-                        <li class="mb-2"><a href="#" class="text-decoration-none text-muted">Home & Garden</a></li>
-                        <li class="mb-2"><a href="#" class="text-decoration-none text-muted">Sports</a></li>
+
+                        <?php
+
+                        if ($num2 > 0) {
+                            while ($row2 = $stmt2->fetch()) {
+
+                                echo '<li class="mb-2"><a href="#" class="text-decoration-none text-muted"> ' . $row2['category_name'] . '</a></li>';
+                            }
+
+                        } else {
+                            echo '<li class="mb-2"><a href="#" class="text-decoration-none text-muted">No Categories yet</a></li>';
+
+
+                        }
+
+
+
+
+                        ?>
+
+
                     </ul>
 
                     <h5 class="fw-bold mb-3">Price Range</h5>
@@ -79,26 +142,54 @@
             <!-- Product Grid -->
             <div class="col-lg-9">
                 <div class="row g-4">
-                    <!-- Item 1 -->
+
+                    <?php
+
+                    if ($num > 0) {
+
+
+                        while ($row = $stmt->fetch()) {
+
+                            echo <<<EOT
+
+                            <!-- Items -->
                     <div class="col-md-4">
                         <div class="card card-custom h-100">
-                            <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=400"
+                            <img src="./../assets/img/{$row['image_path']}"
                                 class="card-img-top" alt="Product">
                             <div class="card-body d-flex flex-column">
-                                <h5 class="card-title text-truncate">Nike Air Red</h5>
+                                <h5 class="card-title text-truncate">{$row['product_name']}</h5>
                                 <div class="mb-2 text-warning small">
                                     <i class="bi bi-star-fill"></i> 4.5
                                 </div>
                                 <div class="mt-auto d-flex justify-content-between align-items-center">
-                                    <span class="price-text">$120.00</span>
-                                    <a href="./product-details.php" class="btn btn-sm btn-outline-custom">View</a>
+                                    <span class="price-text">{$row['price']} $</span>
+                                    <a href="./product-details.php?id={$row['product_id']}&cat={$row['category_id']}" class="btn btn-sm btn-outline-custom">View</a>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    
-                    
+EOT;
+
+
+
+                        }
+
+
+                    } else {
+
+
+                        echo '<p>No Products Yet';
+
+                    }
+
+                    ?>
+
+
+
+
                 </div>
+
 
                 <!-- Pagination
                 <nav class="mt-5">

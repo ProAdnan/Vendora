@@ -1,3 +1,10 @@
+<?php
+
+session_start();
+
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -12,24 +19,38 @@
 
 <body>
 
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg bg-white sticky-top">
-        <div class="container">
-            <a class="navbar-brand" href="./../index.php">Vendora.</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navP">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navP">
-                <ul class="navbar-nav ms-auto align-items-center">
-                    <li class="nav-item"><a class="nav-link" href="products.html">Products</a></li>
-                    <li class="nav-item"><a class="nav-link active text-danger fw-bold" href="./discounts.php">Deals</a>
-                    </li>
-                    <li class="nav-item"><a class="nav-link" href="cart.html"><i class="bi bi-cart3 fs-5"></i> <span
-                                class="badge bg-danger rounded-pill custom-badge">2</span></a></li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+    <?php
+
+    if (isset($_SESSION["user_type"])) {
+
+        if ($_SESSION["user_type"] == "admin") {
+
+
+            include './../includes/admin_nav.php';
+
+
+        } elseif ($_SESSION["user_type"] == "user") {
+
+
+            include './../includes/user_nav.php';
+
+
+        } else {
+
+
+            include './../includes/guest_nav.php';
+
+
+        }
+
+    } else {
+
+        include './../includes/guest_nav.php';
+
+    }
+
+
+    ?>
 
     <!-- Header -->
     <div class="bg-danger text-white py-4 mb-5">

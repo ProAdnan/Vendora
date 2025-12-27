@@ -3,7 +3,7 @@
         <div class="container">
             <div class="row g-4">
                 <div class="col-md-4">
-                    <a href="index.php" class="footer-logo">Vendora.</a>
+                    <a href="./../index.php" class="footer-logo">Vendora.</a>
                     <p class="text-muted">Your one-stop destination for quality products. Shop smart, live better.</p>
                     <div class="d-flex gap-3">
                         <a href="#" class="text-muted"><i class="bi bi-facebook fs-5"></i></a>

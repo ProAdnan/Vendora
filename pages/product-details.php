@@ -1,3 +1,53 @@
+<?php
+session_start();
+
+require_once __DIR__ . './../classes/Database.php';
+require_once __DIR__ . './../classes/Product.php';
+
+
+
+
+if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
+    die('Invalid product ID');
+}
+
+
+// if (!isset($_GET['cat']) || !is_numeric($_GET['cat'])) {
+//     die('Invalid category ID');
+// }
+
+
+$id = (int) $_GET['id'];
+$category = (int) $_GET['cat'];
+
+
+$product = new Product();
+
+$single_product = $product->readOne($id);
+
+$products_same_category = $product->read_by_category($category);
+
+$num_p = $products_same_category->rowCount();
+
+if (!$single_product) {
+
+    die('product not found');
+
+}
+
+
+
+if (!$products_same_category) {
+
+    die('products by cat not found');
+
+
+}
+
+
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -12,25 +62,50 @@
 
 <body>
 
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg bg-white sticky-top">
-        <div class="container">
-            <a class="navbar-brand" href="./../index.php">Vendora.</a>
-            <div class="d-flex align-items-center">
-                <a class="nav-link me-3" href="./cart.php"><i class="bi bi-cart3 fs-5"></i> <span
-                        class="badge bg-danger rounded-pill custom-badge">2</span></a>
-                <a class="btn btn-sm btn-outline-secondary" href="./products.php">Back to Shop</a>
-            </div>
-        </div>
-    </nav>
+    <?php
+
+    if (isset($_SESSION["user_type"])) {
+
+        if ($_SESSION["user_type"] == "admin") {
+
+
+            include './../includes/admin_nav.php';
+
+
+        } elseif ($_SESSION["user_type"] == "user") {
+
+
+            include './../includes/user_nav.php';
+
+
+        } else {
+
+
+            include './../includes/guest_nav.php';
+
+
+        }
+
+    } else {
+
+        include './../includes/guest_nav.php';
+
+    }
+
+
+
+    ?>
+
 
     <div class="container py-5">
         <div class="row g-5">
             <!-- Product Image -->
             <div class="col-lg-6">
                 <div class="card card-custom border-0 p-3">
-                    <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=1000"
+
+                    <img src="./../assets/img/<?= htmlspecialchars($single_product['image_path']) ?>"
                         class="img-fluid rounded" alt="Product Image">
+
                 </div>
             </div>
 
@@ -38,30 +113,31 @@
             <div class="col-lg-6">
                 <span class="badge bg-primary-custom bg-opacity-10 text-primary-custom px-3 py-2 rounded-pill mb-3">In
                     Stock</span>
-                <h1 class="fw-bold mb-2">Nike Air Red</h1>
+                <h1 class="fw-bold mb-2"><?= $single_product['product_name'] ?></h1>
                 <div class="mb-3">
                     <span class="text-warning"><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i
                             class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i
                             class="bi bi-star-half"></i></span>
                     <span class="text-muted ms-2">(124 reviews)</span>
                 </div>
-                <h2 class="fw-bold text-primary-custom mb-4">$120.00</h2>
+                <h2 class="fw-bold text-primary-custom mb-4"><?= $single_product['price'] ?>$</h2>
 
                 <p class="text-muted mb-4 lead" style="font-size: 1rem;">
-                    Experience ultimate comfort and style with the Nike Air Red. Designed for performance and built for
-                    the streets, these sneakers feature breathable mesh, responsive cushioning, and a durable outsole.
-                    Perfect for your daily run or casual wear.
+                    <?= $single_product['product_description'] ?>
                 </p>
 
                 <div class="d-flex gap-3 mb-4">
                     <input type="number" class="form-control w-25 text-center" value="1" min="1">
-                    <button class="btn btn-primary-custom flex-grow-1" onclick="window.location.href='./cart.php'">Add
+                    <button class="btn btn-primary-custom flex-grow-1"
+                        onclick="window.location.href='./cart.php?id={$single_product['product_id']}'">Add
                         to
                         Cart</button>
                     <button class="btn btn-outline-danger"><i class="bi bi-heart"></i></button>
                 </div>
 
                 <hr class="my-4">
+
+
 
                 <!-- Reviews -->
                 <div>
@@ -86,35 +162,62 @@
         <div class="container">
             <h3 class="fw-bold mb-4">You might also like</h3>
             <div class="row g-4">
+
+                <?php
+
+                if ($num_p > 0) {
+
+
+                    while ($product = $products_same_category->fetch()) {
+
+
+                        if ($product['product_id'] == $single_product['product_id']) {
+
+                            continue;
+
+                        }
+
+
+                        $image = $product['image_path'];
+
+                        echo <<<EOT
                 <div class="col-md-3">
                     <div class="card card-custom h-100">
-                        <img src="https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?q=80&w=400"
+
+
+                        <img src="./../assets/img/{$image}" 
                             class="card-img-top" style="height: 200px;" alt="Related">
                         <div class="card-body">
-                            <h6 class="fw-bold">Nike Green</h6>
-                            <span class="text-primary-custom fw-bold">$110.00</span>
-
+                            <h6 class="fw-bold">{$product['product_name']}</h6>
+                            <span class="text-primary-custom fw-bold">{$product['price']}</span>
                         </div>
 
-                        <a href="./product-details.php" class="btn btn-sm btn-outline-custom">View</a>
-
+                        <a href="./product-details.php?id={$product['product_id']}&cat={$product['category_id']}" class="btn btn-sm btn-outline-custom">View</a>
                     </div>
                 </div>
 
-                <div class="col-md-3">
-                    <div class="card card-custom h-100">
-                        <img src="https://images.unsplash.com/photo-1608231387042-66d1773070a5?q=80&w=400"
-                            class="card-img-top" style="height: 200px;" alt="Related">
-                        <div class="card-body">
-                            <h6 class="fw-bold">Puma Black</h6>
-                            <span class="text-primary-custom fw-bold">$90.00</span>
-                        </div>
+EOT;
 
-                        <a href="./product-details.php" class="btn btn-sm btn-outline-custom">View</a>
-                    </div>
-                </div>
+                    }
 
 
+
+
+
+
+
+
+                } else {
+
+                    echo "<p>No Related Products Found</p>";
+                }
+
+
+
+
+
+
+                ?>
 
             </div>
         </div>

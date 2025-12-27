@@ -1,20 +1,22 @@
 <?php
 
-require_once './Database.php';
+require_once __DIR__ . '/Database.php';
 
 class Product
 {
     private $db;
     private $table = "products";
 
-    // Product properties
-    public $id;
-    public $name;
-    public $description;
+    public $product_id;
+    public $product_name;
     public $price;
+    public $quantity;
+    public $product_description;
+    public $is_visible;
+    public $has_warranty;
+
+    public $warranty_period;
     public $category_id;
-    public $image;
-    public $stock;
 
     public function __construct()
     {
@@ -23,25 +25,156 @@ class Product
 
     }
 
-    // Create a new product
-    public function create()
+    public function create($product_name, $price, $quantity, $product_description, $category_id, $image_path)
     {
-        // Implement with prepared statements
+
+        // if ($table == "products") {
+
+        $sql = "INSERT INTO {$this->table}
+
+            (product_name, price, quantity, product_description, category_id,image_path)
+
+            VALUES (:name, :price, :quantity, :description, :category, :image_path)";
+
+
+
+        $stmt = $this->db->prepare($sql);
+
+
+        return $stmt->execute([
+            ':name' => $product_name,
+            ':price' => $price,
+            ':quantity' => $quantity,
+            ':description' => $product_description,
+            ':category' => $category_id,
+            ':image_path' => $image_path
+        ]);
+
+
+
+        //         } elseif ($table == "discounts") {
+
+        //             $discount;
+
+        // $sql = "INSERT INTO {$table}
+
+        //             (product_name, price, quantity, product_description, category_id)
+
+        //             VALUES (:name, :price, :quantity, :description, :category) where product_id=";
+
+
+
+        //             $stmt = $this->db->prepare($sql);
+
+
+        //             return $stmt->execute([
+//                 ':name' => $product_name,
+//                 ':price' => $price,
+//                 ':quantity' => $quantity,
+//                 ':description' => $product_description,
+//                 ':category' => $category_id
+//             ]);
+
+
+
+
+        //         }
+
+
+
+
+
     }
 
-    // Read all products with optional filtering and pagination
     public function readAll()
     {
-        // Implement with prepared statements
-        // Return array of products
+        $query = "SELECT * FROM {$this->table}";
+
+        $stmt = $this->db->prepare($query);
+
+        $stmt->execute();
+
+        return $stmt; // Returns a PDOStatement object
+
     }
 
-    // Read a single product by ID
     public function readOne($id)
     {
-        // Implement with prepared statements
-        // Return product object or false
+
+        $query = "SELECT *
+              FROM {$this->table}
+              WHERE product_id = :id
+              LIMIT 1";
+
+        $stmt = $this->db->prepare($query);
+
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+
+        $stmt->execute();
+
+        return $stmt->fetch();
+
+
+
     }
+
+    public function add_category($category)
+    {
+
+
+        $sql = "INSERT INTO categories
+
+            (category_name)
+
+            VALUES (:name)";
+
+
+
+        $stmt = $this->db->prepare($sql);
+
+
+        return $stmt->execute([
+            ':name' => $category
+
+        ]);
+
+
+    }
+
+
+    public function read_all_category()
+    {
+
+        $query = "SELECT * FROM categories";
+
+        $stmt = $this->db->prepare($query);
+
+        $stmt->execute();
+
+        return $stmt; // Returns a PDOStatement object
+
+
+
+    }
+
+
+    public function read_by_category($cat)
+    {
+
+        $query = "SELECT * FROM products where category_id = :id limit 4";
+
+        $stmt = $this->db->prepare($query);
+
+        $stmt->bindParam(":id", $cat, PDO::PARAM_INT);
+
+        $stmt->execute();
+
+        return $stmt; // Returns a PDOStatement object
+
+
+    }
+
+
 
     // Update a product
     public function update()
