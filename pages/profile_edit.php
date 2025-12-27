@@ -1,3 +1,45 @@
+<?php
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+require_once __DIR__ . '/../classes/Database.php';
+require_once __DIR__ . '/../classes/User.php';
+$db = Database::getInstance()->getConnection();
+if (isset($_GET["submit"])) {
+    $userId = $_SESSION['user_id'];
+    $sql = "SELECT * FROM users WHERE user_id = ?";
+    $stmt = $db->prepare($sql);
+    $stmt->execute([$userId]);
+    $userRow = $stmt->fetch(PDO::FETCH_ASSOC);
+
+}
+
+ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["save"])) {
+
+    $errors = [];
+        $user = new User();
+        $user->setName(trim($_POST['name'] ?? ''));
+        $user->setEmail(trim($_POST['email'] ?? ''));
+        $user->setGender($_POST['gender'] ?? $_POST['gender_current']);
+        $user->setPassword(trim($_POST['password'] ?? ''));
+        $user->setConfirmPassword(trim($_POST['confirm_password'] ?? ''));
+        if ($user->getPassword()) {
+            $errors = $user->updateAll();
+        } else {
+            $errors = $user->updateWithoutPassword();
+        }
+        if (!$errors) {
+            header('location:profile.php');
+        } else {
+
+        }
+}
+
+
+
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -17,7 +59,7 @@
         <div class="container">
             <a class="navbar-brand" href="index.html">Vendora.</a>
             <div class="ms-auto">
-                <a href="profile.html" class="btn btn-sm btn-outline-secondary">Cancel</a>
+                <a href="profile.php" class="btn btn-sm btn-outline-secondary">Cancel</a>
             </div>
         </div>
     </nav>
@@ -32,7 +74,17 @@
                 </div>
 
                 <div class="card card-custom p-4">
-                    <form action="profile.html">
+                    <?php if (!empty($errors)): ?>
+                        <div class="alert alert-danger">
+                            <ul class="mb-0">
+                                <?php foreach ($errors as $error): ?>
+                                    <li><?= htmlspecialchars($error) ?></li>
+                                <?php endforeach; ?>
+                            </ul>
+                        </div>
+                    <?php endif; ?>
+
+                    <form action="" method="POST">
 
                         <!-- Avatar Upload Simulation -->
                         <div class="text-center mb-4">
@@ -48,31 +100,45 @@
 
                         <div class="row g-3">
                             <div class="col-md-6">
-                                <label for="username" class="form-label text-muted small fw-bold">Username</label>
-                                <input type="text" class="form-control" id="username" value="johndoe123">
+                                <label for="name" class="form-label text-muted small fw-bold">Name</label>
+                                <input type="text" name="name" class="form-control" id="username"
+                                    value="<?= htmlspecialchars($userRow['name']) ?>">
                             </div>
                             <div class="col-md-6">
                                 <label for="email" class="form-label text-muted small fw-bold">Email</label>
-                                <input type="email" class="form-control" id="email" value="john.doe@example.com">
+                                <input type="email" class="form-control" name="email" id="email"
+                                    value="<?= htmlspecialchars($userRow['email']) ?>">
                             </div>
                             <div class="col-md-6">
                                 <label for="gender" class="form-label text-muted small fw-bold">Gender</label>
-                                <select class="form-select" id="gender">
-                                    <option value="male" selected>Male</option>
+                                <select class="form-select" name="gender" id="gender">
+                                    <option value="" selected disabled>Select Gender</option>
+                                    <option value="male">Male</option>
                                     <option value="female">Female</option>
-                                    <option value="other">Other</option>
                                 </select>
                             </div>
                             <div class="col-md-6">
+                                <label for="gender_current" class="form-label text-muted small fw-bold">Gender</label>
+                                <input type="gender_current" name="gender_current" class="form-control"
+                                    id="gender_current" value="<?= htmlspecialchars($userRow['gender']) ?>" readonly>
+                            </div>
+                            <div class="col-md-6">
                                 <label for="password" class="form-label text-muted small fw-bold">New Password</label>
-                                <input type="password" class="form-control" id="password"
+                                <input type="password" name="password" class="form-control" id="password"
                                     placeholder="Leave blank to keep current">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="confirm_password" class="form-label text-muted small fw-bold">Confirm
+                                    Password</label>
+                                <input type="confirm_password" name="confirm_password" class="form-control"
+                                    id="confirm_password" placeholder="Leave blank to keep current">
                             </div>
                         </div>
 
                         <div class="mt-4 d-flex justify-content-end gap-2">
-                            <a href="profile.html" class="btn btn-light">Cancel</a>
-                            <button type="submit" class="btn btn-primary-custom px-4">Save Changes</button>
+                            <a href="profile.php" class="btn btn-light">Cancel</a>
+                            <button type="submit" name="save" value="save" class="btn btn-primary-custom px-4">Save
+                                Changes</button>
                         </div>
                     </form>
                 </div>

@@ -21,10 +21,10 @@
                         <li>
                             <hr class="dropdown-divider">
                         </li>
-                        <li><a class="dropdown-item text-danger" href="./pages/logout.php">Logout</a></li>
+                        <li><a class="dropdown-item text-danger"  href="./pages/loginProcess.php">Logout</a></li>
                     </ul>
                 </li>
             </ul>
         </div>
     </div>
-</nav>
+</nav>   

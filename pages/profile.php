@@ -1,3 +1,20 @@
+ <?php
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+require_once __DIR__ . '/../classes/Database.php';
+$db = Database::getInstance()->getConnection();
+
+$userId = $_SESSION['user_id'];
+$sql = "SELECT * FROM users WHERE user_id = ?";
+$stmt = $db->prepare($sql);
+$stmt->execute([$userId]);
+$userRow = $stmt->fetch(PDO::FETCH_ASSOC);
+$_SESSION["email"] = $userRow["email"];
+
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -21,7 +38,7 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto align-items-center">
-                    <li class="nav-item"><a class="nav-link" href="products.html">Products</a></li>
+                    <li class="nav-item"><a class="nav-link" href="products.php">Products</a></li>
                     <li class="nav-item"><a class="nav-link" href="#">Services</a></li>
                     <li class="nav-item"><a class="nav-link" href="#">Contact Us</a></li>
                     <li class="nav-item dropdown ms-lg-3">
@@ -29,16 +46,14 @@
                             data-bs-toggle="dropdown">
                             <img src="https://ui-avatars.com/api/?name=John+Doe&background=0D8ABC&color=fff"
                                 class="rounded-circle me-2" width="32" height="32" alt="User">
-                            <span>John Doe</span>
+                            <span><?= $userRow["name"] ?></span>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end border-0 shadow-sm">
-                            <li><a class="dropdown-item" href="profile.html">My Profile</a></li>
-                            <li><a class="dropdown-item" href="admin_dashboard.html">Admin Dashboard</a></li>
                             <!-- For demo purposes -->
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
-                            <li><a class="dropdown-item text-danger" href="index.html">Logout</a></li>
+                            <li><a class="dropdown-item text-danger" href="loginProcess.php">Logout</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -52,16 +67,16 @@
 
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <h2 class="fw-bold m-0">My Profile</h2>
-                    <a href="profile_edit.html" class="btn btn-primary-custom"><i
+                    <a href="profile_edit.php?submit=submit" class="btn btn-primary-custom"><i
                             class="bi bi-pencil-square me-2"></i>Edit Profile</a>
                 </div>
 
                 <div class="card card-custom p-4">
                     <div class="d-flex flex-column flex-md-row align-items-center mb-5">
-                        <img src="https://ui-avatars.com/api/?name=John+Doe&size=128&background=0D8ABC&color=fff"
+                        <img src="https://ui-avatars.com/api/?name=John+oe&size=128&background=0D8ABC&color=fff"
                             class="rounded-circle shadow-sm mb-3 mb-md-0 me-md-4" alt="Profile">
                         <div class="text-center text-md-start">
-                            <h3 class="fw-bold mb-1">John Doe</h3>
+                            <h3 class="fw-bold mb-1"><?= htmlspecialchars($userRow['name']) ?></h3>
                             <span
                                 class="badge bg-primary-custom bg-opacity-10 text-primary-custom px-3 py-1 rounded-pill">Customer</span>
                         </div>
@@ -69,16 +84,16 @@
 
                     <div class="row g-4">
                         <div class="col-md-6">
-                            <label class="text-muted small fw-bold text-uppercase mb-1">Username</label>
-                            <p class="fs-5 fw-medium">johndoe123</p>
+                            <label class="text-muted small fw-bold text-uppercase mb-1">Name</label>
+                            <p class="fs-5 fw-medium"><?= $userRow["name"] ?></p>
                         </div>
                         <div class="col-md-6">
                             <label class="text-muted small fw-bold text-uppercase mb-1">Email Address</label>
-                            <p class="fs-5 fw-medium">john.doe@example.com</p>
+                            <p class="fs-5 fw-medium"><?= htmlspecialchars($userRow["email"]) ?></p>
                         </div>
                         <div class="col-md-6">
                             <label class="text-muted small fw-bold text-uppercase mb-1">Gender</label>
-                            <p class="fs-5 fw-medium">Male</p>
+                            <p class="fs-5 fw-medium"><?= htmlspecialchars($userRow["gender"]) ?></p>
                         </div>
                         <div class="col-md-6">
                             <label class="text-muted small fw-bold text-uppercase mb-1">Password</label>
@@ -86,7 +101,9 @@
                         </div>
                         <div class="col-md-6">
                             <label class="text-muted small fw-bold text-uppercase mb-1">Registration Date</label>
-                            <p class="fs-5 fw-medium">Dec 25, 2025</p>
+                            <p class="fs-5 fw-medium">
+                                <?= htmlspecialchars((new DateTime($userRow["register_date"]))->format('Y-m-d')) ?>
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -98,4 +115,4 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
-</html>
+</html>   

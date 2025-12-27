@@ -86,7 +86,8 @@
                     <strong>Admin User</strong>
                 </a>
                 <ul class="dropdown-menu shadow">
-                    <li><a class="dropdown-item" href="./../index.php">Sign out</a></li>
+<li><a class="dropdown-item" href="loginProcess.php">Sign out</a></li>
+
                 </ul>
             </div>
         </div>

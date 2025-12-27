@@ -59,15 +59,31 @@
                     <h2 class="fw-bold">Welcome Back</h2>
                     <p class="text-muted">Please enter your details to sign in.</p>
                 </div>
+                <?php
+                if (session_status() == PHP_SESSION_NONE) {
+                    session_start();
+                }
 
-                <form action="profile.html"> <!-- Simulating login -->
+                if (!empty($_SESSION['login_error'])): ?>
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                        <?php echo $_SESSION['login_error']; ?>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                    <?php
+                    unset($_SESSION['login_error']); // حتى ما تضل تظهر بعد الريفريش
+                endif;
+                ?>
+
+                <form action="loginProcess.php" method="POST"> <!-- Simulating login -->
                     <div class="mb-3">
                         <label for="email" class="form-label text-muted small fw-bold">Email Address</label>
-                        <input type="email" class="form-control" id="email" placeholder="name@example.com" required>
+                        <input type="email" name="email" class="form-control" id="email" placeholder="name@example.com"
+                            required>
                     </div>
                     <div class="mb-3">
                         <label for="password" class="form-label text-muted small fw-bold">Password</label>
-                        <input type="password" class="form-control" id="password" placeholder="••••••••" required>
+                        <input type="password" name="password" class="form-control" id="password" placeholder="••••••••" required>
                     </div>
                     <div class="d-flex justify-content-between align-items-center mb-4">
                         <div class="form-check">
@@ -76,7 +92,7 @@
                         </div>
                         <a href="#" class="small text-primary-custom text-decoration-none">Forgot password?</a>
                     </div>
-                    <button type="submit" class="btn btn-primary-custom w-100 mb-3">Sign In</button>
+                    <button type="submit" name="submit" class="btn btn-primary-custom w-100 mb-3">Sign In</button>
 
                     <div class="text-center">
                         <span class="text-muted small">Don't have an account? </span>

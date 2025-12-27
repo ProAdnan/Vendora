@@ -1,13 +1,4 @@
-<?php
 
-session_start();
-
-/* temporary*/
-
-$_SESSION["user_type"] = "not yet";/*when login in,after login store in settion,and come here and delete this value, */
-
-
-?>
 
 
 <!DOCTYPE html>
@@ -22,14 +13,17 @@ $_SESSION["user_type"] = "not yet";/*when login in,after login store in settion,
 
 
     <?php
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
 
-    if ($_SESSION["user_type"] == "admin") {
+    if (isset($_SESSION["user_type"]) && $_SESSION["user_type"] == "admin") {
 
 
         include './includes/admin_nav.php';
 
 
-    } elseif ($_SESSION["user_type"] == "user") {
+    } elseif (isset($_SESSION["user_type"]) && $_SESSION["user_type"] == "user") {
 
 
         include './includes/user_nav.php';
