@@ -66,19 +66,19 @@ $num = $stmt3->rowCount();
         if ($_SESSION["user_type"] == "admin") {
 
 
-            include './includes/admin_nav.php';
+            include './../includes/admin_nav.php';
 
 
         } elseif ($_SESSION["user_type"] == "user") {
 
 
-            include './includes/user_nav.php';
+            include './../includes/user_nav.php';
 
 
         } else {
 
 
-            include './includes/guest_nav.php';
+            include './../includes/guest_nav.php';
 
 
         }
@@ -112,7 +112,7 @@ $num = $stmt3->rowCount();
                             <i class="bi bi-search"></i>
                         </button> -->
                     </div>
-
+    
                   
 
 
@@ -280,7 +280,7 @@ $num = $stmt3->rowCount();
                                     <span class="price-text">{$row['price']} $</span>
                                     <a href="./product-details.php?id={$row['product_id']}&cat={$row['category_id']}" class="btn btn-sm btn-outline-custom">View</a>
                                 </div>
-                            </div>  
+                            </div>
                         </div>
                     </div>
 EOT;

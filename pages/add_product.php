@@ -177,7 +177,7 @@ $num = $stmt->rowCount();
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label fw-bold small text-muted">Discount (%)</label>
-                                <input type="number" name="discount" class="form-control" placeholder="0%">
+                                <input type="number" name="discount" class="form-control" placeholder="0%" value="0">
                             </div>
                         </div>
 
