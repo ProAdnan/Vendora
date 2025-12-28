@@ -44,6 +44,10 @@ if (!$products_same_category) {
 
 }
 
+$cat_name = $product->get_single_categoty($single_product['category_id']);
+
+
+
 
 ?>
 
@@ -114,6 +118,7 @@ if (!$products_same_category) {
                 <span class="badge bg-primary-custom bg-opacity-10 text-primary-custom px-3 py-2 rounded-pill mb-3">In
                     Stock</span>
                 <h1 class="fw-bold mb-2"><?= $single_product['product_name'] ?></h1>
+                <span class="badge bg-light text-dark border"><?= $cat_name['category_name'] ?></span>
                 <div class="mb-3">
                     <span class="text-warning"><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i
                             class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i

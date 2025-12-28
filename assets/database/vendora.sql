@@ -42,8 +42,10 @@ CREATE TABLE products (
     warranty_period INT,
     category_id INT,
     image_path VARCHAR(255),
+    is_featured BOOLEAN,
+
     FOREIGN KEY (category_id) REFERENCES categories(category_id)
-);
+);z
 
 CREATE TABLE orders (
     order_id INT AUTO_INCREMENT PRIMARY KEY,
@@ -117,18 +119,4 @@ CREATE TABLE discounts (
     start_date DATE,
     end_date DATE,
     FOREIGN KEY (product_id) REFERENCES products(product_id)
-);
-
-CREATE TABLE featured (
-    product_id INT AUTO_INCREMENT PRIMARY KEY,
-    product_name VARCHAR(100),
-    price DECIMAL(10, 2),
-    quantity INT,
-    product_description TEXT,
-    is_visible BOOLEAN,
-    has_warranty BOOLEAN,
-    warranty_period INT,
-    category_id INT,
-    image_path VARCHAR(255),
-    FOREIGN KEY (category_id) REFERENCES categories(category_id)
 );

@@ -25,16 +25,16 @@ class Product
 
     }
 
-    public function create($product_name, $price, $quantity, $product_description, $category_id, $image_path)
+    public function create($product_name, $price, $quantity, $product_description, $category_id, $image_path, $is_featured)
     {
 
         // if ($table == "products") {
 
         $sql = "INSERT INTO {$this->table}
 
-            (product_name, price, quantity, product_description, category_id,image_path)
+            (product_name, price, quantity, product_description, category_id,image_path,is_featured)
 
-            VALUES (:name, :price, :quantity, :description, :category, :image_path)";
+            VALUES (:name, :price, :quantity, :description, :category, :image_path, :is_featured)";
 
 
 
@@ -47,7 +47,8 @@ class Product
             ':quantity' => $quantity,
             ':description' => $product_description,
             ':category' => $category_id,
-            ':image_path' => $image_path
+            ':image_path' => $image_path,
+            ':is_featured' => $is_featured
         ]);
 
 
@@ -97,6 +98,21 @@ class Product
         return $stmt; // Returns a PDOStatement object
 
     }
+
+    public function read_just_featured()
+    {
+
+        $query = "SELECT * FROM {$this->table} where is_featured = 1 limit 4";
+
+        $stmt = $this->db->prepare($query);
+
+        $stmt->execute();
+
+        return $stmt; // Returns a PDOStatement object
+
+
+    }
+
 
     public function readOne($id)
     {
@@ -175,6 +191,25 @@ class Product
     }
 
 
+
+    public function get_single_categoty($id)
+    {
+
+        $query = "SELECT category_name FROM categories where category_id = :id limit 1";
+
+        $stmt = $this->db->prepare($query);
+
+        $stmt->bindParam(":id", $id);
+
+        $stmt->execute();
+
+        return $stmt->fetch(); // Returns a PDOStatement object
+
+    }
+
+
+
+
     public function filterProducts($filters = [])
     {
 
@@ -183,7 +218,7 @@ class Product
 
         $params = [];
 
-        
+
         if (!empty($filters['category_id'])) {
 
             $sql .= " AND category_id = :category_id";
@@ -191,7 +226,7 @@ class Product
 
         }
 
-        
+
         if (!empty($filters['min_price'])) {
 
             $sql .= " AND price >= :min_price";
@@ -199,7 +234,7 @@ class Product
 
         }
 
-       
+
         if (!empty($filters['max_price'])) {
 
             $sql .= " AND price <= :max_price";
@@ -207,7 +242,7 @@ class Product
 
         }
 
-        
+
         if (!empty($filters['search'])) {
 
             $sql .= " AND product_name LIKE :search";

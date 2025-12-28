@@ -112,7 +112,7 @@ $num = $stmt3->rowCount();
                             <i class="bi bi-search"></i>
                         </button> -->
                     </div>
-    
+
                   
 
 
@@ -280,7 +280,7 @@ $num = $stmt3->rowCount();
                                     <span class="price-text">{$row['price']} $</span>
                                     <a href="./product-details.php?id={$row['product_id']}&cat={$row['category_id']}" class="btn btn-sm btn-outline-custom">View</a>
                                 </div>
-                            </div>
+                            </div>  
                         </div>
                     </div>
 EOT;

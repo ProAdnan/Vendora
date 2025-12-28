@@ -34,6 +34,7 @@ if (isset($_POST['submit'])) {
     } else {
 
         die('Price must set !');
+        
     }
 
 
@@ -118,12 +119,16 @@ if (isset($_POST['submit'])) {
     $image_path= $path_name;
 
 
+    $is_featured = isset($_POST['is_featured']) ? 1 : 0;
+
+    
+
 
     if (!empty($product_name) && !empty($price) && !empty($product_description)) {
 
         $product = new Product();
 
-        $result = $product->create($product_name, $price, $quantity, $product_description, $category_id, $image_path);
+        $result = $product->create($product_name, $price, $quantity, $product_description, $category_id, $image_path,$is_featured);
 
         if (!$result) {
 

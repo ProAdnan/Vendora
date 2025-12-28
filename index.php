@@ -10,7 +10,7 @@ require_once __DIR__ . './classes/Product.php';
 $product = new Product();
 
 
-$stmt = $product->readAll();
+$stmt = $product->read_just_featured();
 
 
 $num = $stmt->rowCount();
@@ -159,7 +159,7 @@ $num = $stmt->rowCount();
                 </div>
             </div>
         </nav>
-    <?php
+        <?php
 
     }
 
@@ -187,7 +187,7 @@ $num = $stmt->rowCount();
                     <div id="heroCarousel" class="carousel slide" data-bs-ride="carousel">
                         <div class="carousel-inner rounded-4 shadow-lg overflow-hidden">
                             <div class="carousel-item active">
-                                <img src="https://images.unsplash.com/photo-1483985988355-763728e1935b?q=80&w=2070&auto=format&fit=crop"
+                                <img src="https://telegrafi.com/media-library/image.jpg?id=62256708&width=2000&height=1500&coordinates=150,0,150,0"
                                     class="d-block w-100" alt="Shopping 1" style="height: 500px; object-fit: cover;">
                             </div>
                             <div class="carousel-item">
@@ -195,7 +195,7 @@ $num = $stmt->rowCount();
                                     class="d-block w-100" alt="Shopping 2" style="height: 500px; object-fit: cover;">
                             </div>
                             <div class="carousel-item">
-                                <img src="https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?q=80&w=2070&auto=format&fit=crop"
+                                <img src="https://png.pngtree.com/thumb_back/fh260/background/20210911/pngtree-electronic-consumer-studio-photography-shopping-cart-on-laptop-computer-online-shopping-image_853490.jpg"
                                     class="d-block w-100" alt="Shopping 3" style="height: 500px; object-fit: cover;">
                             </div>
                         </div>
@@ -252,6 +252,10 @@ $num = $stmt->rowCount();
         </div>
     </section>
 
+
+
+
+
     <!-- Featured Products Preview -->
     <section class="py-5 bg-light">
         <div class="container">
@@ -264,22 +268,35 @@ $num = $stmt->rowCount();
             </div>
 
             <div class="row g-4">
-                <!-- Product 1 -->
+
+
+                <?php
+                if ($num > 0) {
+                    
+
+                    while ($row = $stmt->fetch()) {
+
+                        $cat_name= $product->get_single_categoty($row['category_id']);
+
+                        echo <<<EOT
+
+
+
                 <div class="col-md-6 col-lg-3">
                     <div class="card card-custom">
-                        <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=1000&auto=format&fit=crop"
+                        <img src="./assets/img/{$row['image_path']}"
                             class="card-img-top" alt="Product">
                         <div class="card-body">
                             <div class="d-flex justify-content-between align-items-center mb-2">
-                                <span class="badge bg-light text-dark border">Shoes</span>
+                                <span class="badge bg-light text-dark border">{$cat_name['category_name']} </span>
                                 <div class="small rating-stars">
                                     <i class="bi bi-star-fill"></i> 4.5
                                 </div>
                             </div>
-                            <h5 class="card-title text-truncate">Nike Air Red</h5>
+                            <h5 class="card-title text-truncate">{$row['product_name']}</h5>
                             <div class="d-flex justify-content-between align-items-center mt-3">
-                                <span class="fw-bold text-primary-custom">$120.00</span>
-                                <a href="./pages/product-details.php"
+                                <span class="fw-bold text-primary-custom">{$row['price']}</span>
+                                <a href="./pages/product-details.php?id={$row['product_id']}&cat={$row['category_id']}"
                                     class="btn btn-sm btn-primary-custom rounded-pill"><i
                                         class="bi bi-bag-plus"></i></a>
                             </div>
@@ -287,74 +304,32 @@ $num = $stmt->rowCount();
                     </div>
                 </div>
 
-                <!-- Product 2 -->
-                <div class="col-md-6 col-lg-3">
-                    <div class="card card-custom">
-                        <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=1000&auto=format&fit=crop"
-                            class="card-img-top" alt="Product">
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between align-items-center mb-2">
-                                <span class="badge bg-light text-dark border">Electronics</span>
-                                <div class="small rating-stars">
-                                    <i class="bi bi-star-fill"></i> 4.8
-                                </div>
-                            </div>
-                            <h5 class="card-title text-truncate">Premium Headphones</h5>
-                            <div class="d-flex justify-content-between align-items-center mt-3">
-                                <span class="fw-bold text-primary-custom">$250.00</span>
-                                <a href="./pages/product-details.php"
-                                    class="btn btn-sm btn-primary-custom rounded-pill"><i
-                                        class="bi bi-bag-plus"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
 
-                <!-- Product 3 -->
-                <div class="col-md-6 col-lg-3">
-                    <div class="card card-custom">
-                        <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?q=80&w=1000&auto=format&fit=crop"
-                            class="card-img-top" alt="Product">
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between align-items-center mb-2">
-                                <span class="badge bg-light text-dark border">Accessories</span>
-                                <div class="small rating-stars">
-                                    <i class="bi bi-star-fill"></i> 4.2
-                                </div>
-                            </div>
-                            <h5 class="card-title text-truncate">Classic Watch</h5>
-                            <div class="d-flex justify-content-between align-items-center mt-3">
-                                <span class="fw-bold text-primary-custom">$180.00</span>
-                                <a href="./pages/product-details.php"
-                                    class="btn btn-sm btn-primary-custom rounded-pill"><i
-                                        class="bi bi-bag-plus"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
 
-                <!-- Product 4 -->
-                <div class="col-md-6 col-lg-3">
-                    <div class="card card-custom">
-                        <img src="https://images.unsplash.com/photo-1583394838336-acd977736f90?q=80&w=1000&auto=format&fit=crop"
-                            class="card-img-top" alt="Product">
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between align-items-center mb-2">
-                                <span class="badge bg-light text-dark border">Electronics</span>
-                                <div class="small rating-stars">
-                                    <i class="bi bi-star-fill"></i> 4.9
-                                </div>
-                            </div>
-                            <h5 class="card-title text-truncate">Smart Play Console</h5>
-                            <div class="d-flex justify-content-between align-items-center mt-3">
-                                <span class="fw-bold text-primary-custom">$399.00</span>
-                                <a href="./pages/product-details.php"
-                                    class="btn btn-sm btn-primary-custom rounded-pill"><i
-                                        class="bi bi-bag-plus"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+             EOT;
+
+
+
+
+
+                    }
+
+                } else {
+
+                    echo "<p>No Featured Products Yet</p>";
+
+                }
+
+                ?>
+
+
+
+
+
+
+
+
+
             </div>
         </div>
     </section>
@@ -376,6 +351,7 @@ $num = $stmt->rowCount();
     <script>
         // Placeholder for any specific interaction
         console.log('Vendora initialized');
+
     </script>
 </body>
 

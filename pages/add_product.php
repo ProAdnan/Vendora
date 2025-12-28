@@ -187,6 +187,11 @@ $num = $stmt->rowCount();
                                 placeholder="Describe the product features, specs, and benefits..." required></textarea>
                         </div>
 
+                        <div class="form-check text-muted small">
+                            <input class="form-check-input" type="checkbox" id="feature" name="is_featured"  >
+                            <label class="form-check-label" for="feature">Make this product featured on homepage</label>
+                        </div>
+
 
                     </div>
                 </div>
