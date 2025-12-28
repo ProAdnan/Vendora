@@ -157,6 +157,20 @@ class Product
 
     }
 
+
+    public function delete_product($id)
+    {
+
+        $query = 'delete from products where product_id = :id';
+
+        $stmt = $this->db->prepare($query);
+
+        $stmt->bindParam(':id', $id);
+        $stmt->execute();
+
+    }
+
+
     public function add_category($category)
     {
 
@@ -179,6 +193,22 @@ class Product
 
 
     }
+
+
+
+    public function delete_cat($id)
+    {
+
+        $query = 'delete from categories where category_id = :id';
+
+        $stmt = $this->db->prepare($query);
+
+        $stmt->bindParam(':id', $id);
+        $stmt->execute();
+
+
+    }
+
 
 
     public function read_all_category()
@@ -347,7 +377,7 @@ class Product
 
         $stmt->execute();
 
-        return $stmt->fetch(); 
+        return $stmt->fetch();
 
 
     }
@@ -371,10 +401,10 @@ class Product
 
     }
 
-    public function num_of_orderItems()
+    public function num_of_orders()
     {
 
-        $query = 'select order_item_id from order_items';
+        $query = 'select order_id from orders';
 
         $stmt = $this->db->prepare($query);
 
@@ -388,17 +418,120 @@ class Product
     }
 
 
+    public function read_all_orders()
+    {
+
+
+        $query = 'select * from orders';
+
+        $stmt = $this->db->prepare($query);
+        $stmt->execute();
+
+
+        return $stmt;
+    }
+
+
+    public function get_user_with_order()
+    {
+
+
+        $query = 'SELECT orders.*, users.*
+FROM orders
+JOIN users ON orders.user_id = users.user_id';
+        $stmt = $this->db->prepare($query);
+        $stmt->execute();
+
+        return $stmt;
+
+
+
+
+
+
+
+    }
+
+
+    public function get_order_by_id($id)
+    {
+
+
+        $query = 'select * from orders where order_id= :id';
+
+        $stmt = $this->db->prepare(query: $query);
+
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+
+        $stmt->execute();
+
+
+
+        return $stmt->fetch();
+
+
+
+    }
+
+
+
     public function num_of_users()
     {
 
         $query = 'select user_id from users';
 
-        $stmt = $this->db->prepare($query);
+        $stmt = $this->db->prepare(query: $query);
         $stmt->execute();
 
         $number = $stmt->rowCount();
 
         return $number;
+
+    }
+
+    public function read_all_users()
+    {
+
+        $query = 'select * from users';
+
+        $stmt = $this->db->prepare(query: $query);
+        $stmt->execute();
+
+
+
+        return $stmt;
+
+    }
+    public function read_user_by_id($id)
+    {
+
+        $query = 'select * from users where user_id = :id';
+
+        $stmt = $this->db->prepare(query: $query);
+
+        $stmt->bindParam(':id', $id);
+
+        $stmt->execute();
+
+
+
+        return $stmt->fetch();
+
+    }
+
+
+
+
+    public function delete_user($id)
+    {
+
+        $query = 'delete from users where user_id = :id';
+
+        $stmt = $this->db->prepare($query);
+
+        $stmt->bindParam(':id', $id);
+        $stmt->execute();
+
 
     }
 
@@ -435,16 +568,7 @@ WHERE product_id = :id; ";
         return $product_id;
     }
 
-    // Delete a product
-    public function delete($id)
-    {
-        // Implement with prepared statements
-    }
 
-    // Handle file uploads for product images
-    public function uploadImage($file)
-    {
-        // Implement secure file upload
-        // Return filename or false
-    }
+
+
 }

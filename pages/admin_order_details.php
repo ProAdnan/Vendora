@@ -1,10 +1,41 @@
-
 <?php
 
 session_start();
 
 
+require_once __DIR__ . './../classes/Database.php';
+require_once __DIR__ . './../classes/Product.php';
+
+if(isset($_GET['id_order']) && $_GET['id_user']){
+
+
+$order_id = (int) $_GET['id_order'];
+
+$user_id = (int) $_GET['id_user'];
+
+
+$product = new Product();
+
+
+$order = $product->get_order_by_id($order_id);
+
+
+$user = $product->read_user_by_id($user_id);
+
+
+
+}
+
+
+
+
+
+
+
 ?>
+
+
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -47,7 +78,8 @@ session_start();
     <div class="d-flex">
         <!-- Sidebar (Reused for consistency) -->
         <div class="sidebar d-flex flex-column p-3">
-            <a href="./../index.php" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-decoration-none px-2">
+            <a href="./../index.php"
+                class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-decoration-none px-2">
                 <span class="fs-4 fw-bold text-primary-custom">Vendora Admin</span>
             </a>
             <hr>

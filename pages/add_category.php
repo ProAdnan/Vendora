@@ -76,7 +76,9 @@ session_start();
                         </div>
 
                         <div class="d-grid">
-                             <input type="submit" name="submit" class="btn btn-primary-custom btn-lg" value="Add Category">
+                             <input type="submit" name="submit" class="btn btn-primary-custom btn-lg" value="Add Category"><br>
+                             <a href="./admin_dashboard.php" class="btn btn-primary-custom btn-lg">Cancel
+                            </a>
                         </div>
                     </form>
 

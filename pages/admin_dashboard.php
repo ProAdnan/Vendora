@@ -16,11 +16,11 @@ $total_income = $product->calculate_OrderItems();
 
 $number_of_categories = $product->calculate_categories();
 
-$number_of_orders = $product->num_of_orderItems();
+$number_of_orders = $product->num_of_orders();
 
 $number_of_users = $product->num_of_users();
 
-
+$all_users = $product->read_all_users();
 
 
 
@@ -28,7 +28,19 @@ $all_products = $product->readAll();
 
 $num_of_products = $all_products->rowCount();
 
+$all_categories = $product->read_all_category();
 
+
+
+$all_orders = $product->read_all_orders();
+$num_of_orders = $all_orders->rowCount();
+
+
+
+
+$orders_users_join= $product->get_user_with_order();
+
+$nums_orders_users= $orders_users_join->rowCount();
 
 
 
@@ -233,7 +245,7 @@ $num_of_products = $all_products->rowCount();
 
                                              <a href="./edit_product.php?id={$product['product_id']}&cat={$product['category_id']}" class="btn btn-sm btn-outline-secondary w-50">Edit</a>
 
-                                            <a href="./delete.php" class="btn btn-sm btn-outline-danger w-50">Delete</a>
+                                            <a href="./confirm_delete.php?id={$product['product_id']}" class="btn btn-sm btn-outline-danger w-50">Delete</a>
 
 
                                     </div>
@@ -271,107 +283,180 @@ EOT;
                 <div class="tab-pane fade" id="categories" role="tabpanel">
                     <div class="d-flex justify-content-between align-items-center mb-4">
                         <h2 class="fw-bold">Categories</h2>
-                        <button class="btn btn-primary-custom"><i class="bi bi-plus-lg me-1"></i><a
-                                href="./add_cat.php">Add Category</a> </button>
+
+                        <a href="./add_category.php" class="btn btn-primary-custom"><i class="bi bi-plus-lg me-1"></i>
+                            Add Category</a>
+
+
+
                     </div>
                     <div class="row g-3">
-                        <div class="col-md-4">
+
+
+                        <?php
+
+                        if ($number_of_categories > 0) {
+
+                            while ($cats = $all_categories->fetch()) {
+
+                                echo <<<EOT
+
+<div class="col-md-4">
                             <div
                                 class="card card-custom p-3 border-0 d-flex flex-row align-items-center justify-content-between">
                                 <div class="d-flex align-items-center">
                                     <div class="bg-primary-custom bg-opacity-10 text-primary-custom p-2 rounded me-3">
                                         <i class="bi bi-laptop"></i>
                                     </div>
-                                    <h6 class="m-0 fw-bold">Electronics</h6>
+                                    <h6 class="m-0 fw-bold">{$cats['category_name']}</h6>
                                 </div>
-                                <button class="btn btn-sm text-danger"><i class="bi bi-trash"></i></button>
+                                <a class="btn btn-sm text-danger" href="./delete_cat.php?id={$cats['category_id']}"><i class="bi bi-trash"></i></a>
+                                
                             </div>
                         </div>
-                        <div class="col-md-4">
-                            <div
-                                class="card card-custom p-3 border-0 d-flex flex-row align-items-center justify-content-between">
-                                <div class="d-flex align-items-center">
-                                    <div class="bg-success bg-opacity-10 text-success p-2 rounded me-3">
-                                        <i class="bi bi-bag"></i>
-                                    </div>
-                                    <h6 class="m-0 fw-bold">Fashion</h6>
-                                </div>
-                                <button class="btn btn-sm text-danger"><i class="bi bi-trash"></i></button>
-                            </div>
-                        </div>
+
+
+
+EOT;
+
+                            }
+
+
+                        } else {
+
+
+                            echo 'No Categories Found';
+
+                        }
+
+
+                        ?>
+
+
+
+
+
+
                     </div>
                 </div>
 
                 <!-- USERS -->
                 <div class="tab-pane fade" id="users" role="tabpanel">
                     <h2 class="fw-bold mb-4">Registered Users</h2>
-                    <div class="card card-custom border-0">
-                        <div class="card-body">
-                            <div class="d-flex align-items-center border-bottom pb-3 mb-3">
-                                <img src="https://ui-avatars.com/api/?name=User+One" class="rounded-circle me-3"
+
+
+
+                    <?php
+
+                    if ($number_of_users > 0) {
+
+
+                        while ($user = $all_users->fetch()) {
+                            echo <<<EOT
+
+                                     <div class="card card-custom border-0">
+<div class="card-body">
+
+<div class="d-flex align-items-center">
+                                <img src="https://ui-avatars.com/api/?name=U" class="rounded-circle me-3"
                                     width="40" height="40">
                                 <div>
-                                    <h6 class="m-0 fw-bold">User One</h6>
-                                    <small class="text-muted">user1@example.com</small>
+                                    <h6 class="m-0 fw-bold">{$user['name']}</h6>
+                                    <small class="text-muted">{$user['email']}</small>
                                 </div>
-                                <div class="ms-auto text-muted small">Joined 2 days ago</div>
-                            </div>
-                            <div class="d-flex align-items-center">
-                                <img src="https://ui-avatars.com/api/?name=User+Two" class="rounded-circle me-3"
-                                    width="40" height="40">
-                                <div>
-                                    <h6 class="m-0 fw-bold">User Two</h6>
-                                    <small class="text-muted">user2@example.com</small>
-                                </div>
-                                <div class="ms-auto text-muted small">Joined 5 days ago</div>
+                                <div class="ms-auto text-muted small">Registerd at : {$user['register_date']}</div>
+                               <a class="btn btn-sm text-danger" href="./delete_user.php?id={$user['user_id']}"><i class="bi bi-trash"></i></a>
+
                             </div>
                         </div>
-                    </div>
+
+                </div><br>
+
+EOT;
+
+
+                        }
+
+
+
+                    } else {
+
+
+                        echo '<p>No Users Registered';
+                    }
+
+
+                    ?>
+
+
+
+
+
+
+
+
                 </div>
 
                 <!-- ORDERS -->
                 <div class="tab-pane fade" id="orders" role="tabpanel">
                     <h2 class="fw-bold mb-4">Recent Orders</h2>
                     <div class="row g-3">
-                        <div class="col-12">
+
+
+                        <?php
+                        if ($nums_orders_users > 0) {
+
+                            while ($orders = $orders_users_join->fetch()) {
+
+                                
+
+                                        echo <<<EOT
+
+<div class="col-12">
                             <div class="card card-custom p-3 border-0">
                                 <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
                                     <div>
-                                        <h6 class="fw-bold m-0">Order #8821</h6>
-                                        <small class="text-muted">By John Doe</small>
+                                        <h6 class="fw-bold m-0">Order {$orders['order_id']}</h6>
+                                        <small class="text-muted">By {$orders['name']} </small>
                                     </div>
-                                    <div>
-                                        <span class="badge bg-warning text-dark">Processing</span>
-                                    </div>
+                                    
                                     <div class="fw-bold">$125.00</div>
                                     <div>
                                         <button class="btn btn-sm btn-light border me-1"><a
-                                                href="./admin_order_details.php">View</a></button>
+                                                href="./admin_order_details.php?id_order={$orders['order_id']}&id_user={$orders['user_id']}">View</a></button>
                                         <button class="btn btn-sm btn-outline-danger"><i
                                                 class="bi bi-trash"></i></button>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-12">
-                            <div class="card card-custom p-3 border-0">
-                                <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
-                                    <div>
-                                        <h6 class="fw-bold m-0">Order #8822</h6>
-                                        <small class="text-muted">By Jane Smith</small>
-                                    </div>
-                                    <div>
-                                        <span class="badge bg-success">Shipped</span>
-                                    </div>
-                                    <div class="fw-bold">$340.00</div>
-                                    <div>
-                                        <button class="btn btn-sm btn-light border me-1">View</button>
-                                        <button class="btn btn-sm btn-outline-danger"><i
-                                                class="bi bi-trash"></i></button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+
+EOT;
+                                    
+                                
+
+                            }
+
+
+
+                        } else {
+
+                            echo '<p>No Orders Yet</p>';
+
+                        }
+
+
+
+
+                        ?>
+
+
+
+
+
+
+
+
                     </div>
                 </div>
 

@@ -165,11 +165,12 @@ if (isset($_POST['submit'])) {
 }
 
 
+ echo '<script>
+        alert("Product Created !");
+       
+    </script>';
 
-
-echo "<script>alert(\"Product Created !\")</script>";
-
-header("Location: admin_dashboard.php");
+header('Location: ./products.php');
 exit;
 
 
