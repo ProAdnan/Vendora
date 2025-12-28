@@ -63,7 +63,36 @@ class Product
     }
 
 
-    public function read_all_discounts(){
+    public function update_Discount($discount, $start, $end, $product_id)
+    {
+
+        $sql = "update discounts set
+        
+         discount= :discountt, start_date = :start, end_date = :end 
+            
+        where product_id= :id
+         ";
+
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([
+
+            ':discountt' => $discount,
+            ':start' => $start,
+            ':end' => $end,
+
+            ':id' => $product_id
+        ]);
+
+
+
+    }
+
+
+
+
+    public function read_all_discounts()
+    {
 
         $query = "SELECT * FROM discounts";
 
@@ -203,6 +232,24 @@ class Product
 
 
 
+    public function calculate_categories()
+    {
+        $query = "SELECT category_id FROM categories";
+
+        $stmt = $this->db->prepare($query);
+
+        $stmt->execute();
+
+        $number = $stmt->rowCount();
+
+        return $number; // Returns a PDOStatement object
+
+
+
+    }
+
+
+
 
     public function filterProducts($filters = [])
     {
@@ -260,11 +307,132 @@ class Product
 
 
 
+    public function calculate_OrderItems()
+    {
+
+
+        $query = "SELECT price_at_purchase FROM order_items";
+
+        $stmt = $this->db->prepare($query);
+
+        $stmt->execute();
+
+        $total_income = 0;
+
+        while ($row = $stmt->fetch()) {
+
+            $total_income += $row['price_at_purchase'];
+
+
+        }
+
+
+
+
+        return $total_income;
+
+
+
+    }
+
+
+    public function get_old_image_path($id)
+    {
+
+        $query = "SELECT image_path FROM products where product_id = :id limit 1";
+
+        $stmt = $this->db->prepare($query);
+
+        $stmt->bindParam(":id", $id, PDO::PARAM_INT);
+
+        $stmt->execute();
+
+        return $stmt->fetch(); 
+
+
+    }
+
+
+
+
+
+
+    public function read_all_orderItems()
+    {
+
+        $query = 'select * from order_items';
+
+        $stmt = $this->db->prepare($query);
+
+        $stmt->execute();
+
+        return $stmt;
+
+
+    }
+
+    public function num_of_orderItems()
+    {
+
+        $query = 'select order_item_id from order_items';
+
+        $stmt = $this->db->prepare($query);
+
+        $stmt->execute();
+
+        $number = $stmt->rowCount();
+
+        return $number;
+
+
+    }
+
+
+    public function num_of_users()
+    {
+
+        $query = 'select user_id from users';
+
+        $stmt = $this->db->prepare($query);
+        $stmt->execute();
+
+        $number = $stmt->rowCount();
+
+        return $number;
+
+    }
+
+
+
 
     // Update a product
-    public function update()
+    public function update_product($product_name, $price, $quantity, $product_description, $category_id, $image_path, $is_featured, $product_id)
     {
-        // Implement with prepared statements
+
+
+        $sql = "
+UPDATE products
+SET product_name = :name, price = :price, quantity = :quantity, product_description = :pro_des, category_id = :cat_id, image_path = :image_path, is_featured = :is_f
+WHERE product_id = :id; ";
+
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([
+
+            ':name' => $product_name,
+            ':price' => $price,
+            ':quantity' => $quantity,
+            ':pro_des' => $product_description,
+            ':cat_id' => $category_id,
+            ':image_path' => $image_path,
+            ':is_f' => $is_featured,
+
+            ':id' => $product_id
+
+        ]);
+
+
+        return $product_id;
     }
 
     // Delete a product

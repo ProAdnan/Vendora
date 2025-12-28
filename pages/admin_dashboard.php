@@ -1,7 +1,36 @@
-
 <?php
 
 session_start();
+
+
+require_once __DIR__ . './../classes/Database.php';
+require_once __DIR__ . './../classes/Product.php';
+
+
+
+$product = new Product();
+
+
+
+$total_income = $product->calculate_OrderItems();
+
+$number_of_categories = $product->calculate_categories();
+
+$number_of_orders = $product->num_of_orderItems();
+
+$number_of_users = $product->num_of_users();
+
+
+
+
+
+$all_products = $product->readAll();
+
+$num_of_products = $all_products->rowCount();
+
+
+
+
 
 
 ?>
@@ -56,7 +85,8 @@ session_start();
     <div class="d-flex">
         <!-- Sidebar -->
         <div class="sidebar d-flex flex-column p-3">
-            <a href="index.html" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-decoration-none px-2">
+            <a href="./admin_dashboard.php"
+                class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-decoration-none px-2">
                 <span class="fs-4 fw-bold text-primary-custom">Vendora Admin</span>
             </a>
             <hr>
@@ -86,6 +116,7 @@ session_start();
                 </li>
             </ul>
             <hr>
+
             <div class="dropdown">
                 <a href="#" class="d-flex align-items-center text-dark text-decoration-none dropdown-toggle"
                     data-bs-toggle="dropdown">
@@ -94,7 +125,9 @@ session_start();
                     <strong>Admin User</strong>
                 </a>
                 <ul class="dropdown-menu shadow">
-<li><a class="dropdown-item" href="loginProcess.php">Sign out</a></li>
+                    <li><a class="dropdown-item" href="./../index.php">Back To Site</a></li>
+
+                    <li><a class="dropdown-item" href="loginProcess.php">Sign out</a></li>
 
                 </ul>
             </div>
@@ -112,25 +145,25 @@ session_start();
                         <div class="col-md-3">
                             <div class="card card-custom p-4 border-0">
                                 <h6 class="text-muted text-uppercase small fw-bold">Total Income</h6>
-                                <h3 class="fw-bold text-primary-custom">$12,450</h3>
+                                <h3 class="fw-bold text-primary-custom"><?php echo $total_income; ?></h3>
                             </div>
                         </div>
                         <div class="col-md-3">
                             <div class="card card-custom p-4 border-0">
                                 <h6 class="text-muted text-uppercase small fw-bold">Categories</h6>
-                                <h3 class="fw-bold">8</h3>
+                                <h3 class="fw-bold"><?php echo $number_of_categories; ?></h3>
                             </div>
                         </div>
                         <div class="col-md-3">
                             <div class="card card-custom p-4 border-0">
                                 <h6 class="text-muted text-uppercase small fw-bold">Orders</h6>
-                                <h3 class="fw-bold">142</h3>
+                                <h3 class="fw-bold"><?php echo $number_of_orders; ?></h3>
                             </div>
                         </div>
                         <div class="col-md-3">
                             <div class="card card-custom p-4 border-0">
                                 <h6 class="text-muted text-uppercase small fw-bold">Customers</h6>
-                                <h3 class="fw-bold">1,250</h3>
+                                <h3 class="fw-bold"><?php echo $number_of_users; ?></h3>
                             </div>
                         </div>
                     </div>
@@ -172,26 +205,65 @@ session_start();
                 <div class="tab-pane fade" id="products" role="tabpanel">
                     <div class="d-flex justify-content-between align-items-center mb-4">
                         <h2 class="fw-bold">Products</h2>
-                        <button class="btn btn-primary-custom"><i class="bi bi-plus-lg me-1"></i> <a href="./add_product.php">Create
-                            Product</a></button>
+
+                        <a href="./add_product.php" class="btn btn-primary-custom">Create Product</a>
+
                     </div>
                     <div class="row g-4">
-                        <!-- Product Item -->
+
+
+                        <?php
+                        if ($num_of_products > 0) {
+
+
+                            while ($product = $all_products->fetch()) {
+
+
+                                echo <<<EOT
+
                         <div class="col-md-4 col-lg-3">
                             <div class="card card-custom h-100">
-                                <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=400"
+                                <img src="./../assets/img/{$product['image_path']}"
                                     class="card-img-top" alt="Product" style="height: 180px;">
                                 <div class="card-body">
-                                    <h6 class="fw-bold">Nike Air Red</h6>
-                                    <p class="text-primary-custom fw-bold">$120.00</p>
+                                    <h6 class="fw-bold">{$product['product_name']}</h6>
+                                    <p class="text-primary-custom fw-bold">{$product['price']}$</p>
                                     <div class="d-flex gap-2">
-                                        <button class="btn btn-sm btn-outline-secondary w-50"><a href="./add_product.php">Edit</a></button>
-                                        <button class="btn btn-sm btn-outline-danger w-50"><a href="./delete.php">Delete</a></button>
+                                             <a href="./product-details.php?id={$product['product_id']}&cat={$product['category_id']}" class="btn btn-sm btn-outline-secondary w-50">View</a>
+
+                                             <a href="./edit_product.php?id={$product['product_id']}&cat={$product['category_id']}" class="btn btn-sm btn-outline-secondary w-50">Edit</a>
+
+                                            <a href="./delete.php" class="btn btn-sm btn-outline-danger w-50">Delete</a>
+
+
                                     </div>
                                 </div>
                             </div>
                         </div>
-                       
+
+
+
+EOT;
+
+                            }
+
+                        } else {
+
+
+                            echo '<p>No Products Yet';
+
+                        }
+
+
+
+                        ?>
+
+
+
+
+
+
+
                     </div>
                 </div>
 
@@ -199,7 +271,8 @@ session_start();
                 <div class="tab-pane fade" id="categories" role="tabpanel">
                     <div class="d-flex justify-content-between align-items-center mb-4">
                         <h2 class="fw-bold">Categories</h2>
-                        <button class="btn btn-primary-custom"><i class="bi bi-plus-lg me-1"></i><a href="./add_cat.php">Add Category</a> </button>
+                        <button class="btn btn-primary-custom"><i class="bi bi-plus-lg me-1"></i><a
+                                href="./add_cat.php">Add Category</a> </button>
                     </div>
                     <div class="row g-3">
                         <div class="col-md-4">
@@ -272,7 +345,8 @@ session_start();
                                     </div>
                                     <div class="fw-bold">$125.00</div>
                                     <div>
-                                        <button class="btn btn-sm btn-light border me-1"><a href="./admin_order_details.php">View</a></button>
+                                        <button class="btn btn-sm btn-light border me-1"><a
+                                                href="./admin_order_details.php">View</a></button>
                                         <button class="btn btn-sm btn-outline-danger"><i
                                                 class="bi bi-trash"></i></button>
                                     </div>

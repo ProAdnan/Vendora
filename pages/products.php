@@ -15,7 +15,7 @@ $product = new Product();
 
 
 $stmt2 = $product->read_all_category();
-$nums_cat=$stmt2->rowCount();
+$nums_cat = $stmt2->rowCount();
 
 
 
@@ -103,7 +103,7 @@ $num = $stmt3->rowCount();
             <div class="col-lg-3 mb-4">
                 <form method="GET" class="filter-panel">
 
-                    
+
                     <h5 class="fw-bold mb-3">Search</h5>
                     <div class="input-group mb-4">
                         <input type="text" name="search" value="<?= htmlspecialchars($_GET['search'] ?? '') ?>"
@@ -112,8 +112,10 @@ $num = $stmt3->rowCount();
                             <i class="bi bi-search"></i>
                         </button> -->
                     </div>
-    
-                  
+
+                    <h5 class="fw-bold mt-4 mb-3"> <a href="./discounts.php"
+                            class="text-decoration-none text-danger">Discounts</a>
+                    </h5>
 
 
                     <h5 class="fw-bold mb-3">Categories</h5>
@@ -121,8 +123,7 @@ $num = $stmt3->rowCount();
                     <div class="form-check mb-2">
 
                         <input class="form-check-input" type="radio" name="category" value=""
-
-                            <?= empty($_GET['category']) ? 'checked' : '' ?>  >
+                            <?= empty($_GET['category']) ? 'checked' : '' ?>>
 
 
                         <label class="form-check-label fw-medium">All Products</label>
@@ -130,50 +131,52 @@ $num = $stmt3->rowCount();
                     </div>
 
 
-                    <?php if($nums_cat > 0) { ?>
-
-                    <?php while ($row2 = $stmt2->fetch()): ?>
-
-                        <div class="form-check mb-2">
-                            <input class="form-check-input" type="radio" name="category" value="<?= $row2['category_id'] ?>"
-
-                                <?= (($_GET['category'] ?? '') == $row2['category_id']) ? 'checked' : '' ?>  >
-
-                            <label class="form-check-label text-muted">
-                                <?= htmlspecialchars($row2['category_name']) ?>
-                            </label>
-                        </div>
 
 
-                    <?php endwhile; ?>
 
-                        <?php 
+                    <?php if ($nums_cat > 0) { ?>
+
+                        <?php while ($row2 = $stmt2->fetch()): ?>
+
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="radio" name="category" value="<?= $row2['category_id'] ?>"
+                                    <?= (($_GET['category'] ?? '') == $row2['category_id']) ? 'checked' : '' ?>>
+
+                                <label class="form-check-label text-muted">
+                                    <?= htmlspecialchars($row2['category_name']) ?>
+                                </label>
+                            </div>
+
+
+                        <?php endwhile; ?>
+
+                        <?php
                     } else {
 
-                            echo '<li class="mb-2"><a href="#" class="text-decoration-none text-muted">No Categories yet</a></li>';
+                        echo '<li class="mb-2"><a href="#" class="text-decoration-none text-muted">No Categories yet</a></li>';
 
 
                     }
 
 
-                        ?>
+                    ?>
 
-                        <a href="./discounts.php"  class="text-decoration-none text-danger">Discounts</a>
+
 
                     <!-- Price Range -->
                     <h5 class="fw-bold mt-4 mb-3">Price Range</h5>
 
                     <input type="number" name="min_price" class="form-control mb-2" placeholder="Min price"
-                        value="<?= htmlspecialchars($_GET['min_price'] ?? '') ?>" >
+                        value="<?= htmlspecialchars($_GET['min_price'] ?? '') ?>">
 
                     <input type="number" name="max_price" class="form-control mb-3" placeholder="Max price"
                         value="<?= htmlspecialchars($_GET['max_price'] ?? '') ?>">
 
-                   
+
                     <input type="submit" class="btn btn-primary-custom w-100" value="Apply Filters">
 
                     <!-- Reset -->
-                    <a href="products.php" class="btn btn-outline-secondary w-100 mt-2" >
+                    <a href="products.php" class="btn btn-outline-secondary w-100 mt-2">
                         Reset
                     </a>
 
@@ -203,21 +206,21 @@ $num = $stmt3->rowCount();
                         </li>
 
                         <?php
-    /*
-                        if ($num2 > 0) {
-                            while ($row2 = $stmt2->fetch()) {
+                        /*
+                                            if ($num2 > 0) {
+                                                while ($row2 = $stmt2->fetch()) {
 
-                                echo '<li class="mb-2"><a href="#" class="text-decoration-none text-muted"> ' . $row2['category_name'] . '</a></li>';
-                            }
+                                                    echo '<li class="mb-2"><a href="#" class="text-decoration-none text-muted"> ' . $row2['category_name'] . '</a></li>';
+                                                }
 
-                        } else {
-                            echo '<li class="mb-2"><a href="#" class="text-decoration-none text-muted">No Categories yet</a></li>';
-
-
-                        }
+                                            } else {
+                                                echo '<li class="mb-2"><a href="#" class="text-decoration-none text-muted">No Categories yet</a></li>';
 
 
-*/
+                                            }
+
+
+                    */
 
                         ?>
 
