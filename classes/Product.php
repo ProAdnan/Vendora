@@ -175,6 +175,62 @@ class Product
     }
 
 
+    public function filterProducts($filters = [])
+    {
+
+        $sql = "SELECT * FROM products WHERE 1=1";
+
+
+        $params = [];
+
+        
+        if (!empty($filters['category_id'])) {
+
+            $sql .= " AND category_id = :category_id";
+            $params[':category_id'] = $filters['category_id'];
+
+        }
+
+        
+        if (!empty($filters['min_price'])) {
+
+            $sql .= " AND price >= :min_price";
+            $params[':min_price'] = $filters['min_price'];
+
+        }
+
+       
+        if (!empty($filters['max_price'])) {
+
+            $sql .= " AND price <= :max_price";
+            $params[':max_price'] = $filters['max_price'];
+
+        }
+
+        
+        if (!empty($filters['search'])) {
+
+            $sql .= " AND product_name LIKE :search";
+            $params[':search'] = '%' . $filters['search'] . '%';
+
+        }
+
+        if (isset($filters['is_visible'])) {
+
+            $sql .= " AND is_visible = :is_visible";
+            $params[':is_visible'] = $filters['is_visible'];
+
+        }
+
+        $stmt = $this->db->prepare($sql);
+
+        $stmt->execute($params);
+
+        return $stmt;
+    }
+
+
+
 
     // Update a product
     public function update()

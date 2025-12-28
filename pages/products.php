@@ -9,13 +9,30 @@ require_once __DIR__ . './../classes/Product.php';
 $product = new Product();
 
 
-$stmt = $product->readAll();
+//$stmt = $product->readAll();
+//$num = $stmt->rowCount();
+
+
 
 $stmt2 = $product->read_all_category();
+$nums_cat=$stmt2->rowCount();
 
 
-$num = $stmt->rowCount();
-$num2 = $stmt2->rowCount();
+
+
+$filters = [
+
+    'category_id' => $_GET['category'] ?? null,
+    'min_price' => $_GET['min_price'] ?? null,
+    'max_price' => $_GET['max_price'] ?? null,
+    'search' => $_GET['search'] ?? null
+
+];
+
+
+$stmt3 = $product->filterProducts($filters);
+
+$num = $stmt3->rowCount();
 
 
 
@@ -78,8 +95,99 @@ $num2 = $stmt2->rowCount();
 
     <div class="container py-5">
         <div class="row">
-            <!-- Sidebar Filters -->
+
+
+            <!-- new side bar-->
+
+
             <div class="col-lg-3 mb-4">
+                <form method="GET" class="filter-panel">
+
+                    
+                    <h5 class="fw-bold mb-3">Search</h5>
+                    <div class="input-group mb-4">
+                        <input type="text" name="search" value="<?= htmlspecialchars($_GET['search'] ?? '') ?>"
+                            class="form-control" placeholder="Search product...">
+                        <!-- <button class="btn btn-primary-custom" type="submit">
+                            <i class="bi bi-search"></i>
+                        </button> -->
+                    </div>
+    
+                  
+
+
+                    <h5 class="fw-bold mb-3">Categories</h5>
+
+                    <div class="form-check mb-2">
+
+                        <input class="form-check-input" type="radio" name="category" value=""
+
+                            <?= empty($_GET['category']) ? 'checked' : '' ?>  >
+
+
+                        <label class="form-check-label fw-medium">All Products</label>
+
+                    </div>
+
+
+                    <?php if($nums_cat > 0) { ?>
+
+                    <?php while ($row2 = $stmt2->fetch()): ?>
+
+                        <div class="form-check mb-2">
+                            <input class="form-check-input" type="radio" name="category" value="<?= $row2['category_id'] ?>"
+
+                                <?= (($_GET['category'] ?? '') == $row2['category_id']) ? 'checked' : '' ?>  >
+
+                            <label class="form-check-label text-muted">
+                                <?= htmlspecialchars($row2['category_name']) ?>
+                            </label>
+                        </div>
+
+
+                    <?php endwhile; ?>
+
+                        <?php 
+                    } else {
+
+                            echo '<li class="mb-2"><a href="#" class="text-decoration-none text-muted">No Categories yet</a></li>';
+
+
+                    }
+
+
+                        ?>
+
+                    <!-- Price Range -->
+                    <h5 class="fw-bold mt-4 mb-3">Price Range</h5>
+
+                    <input type="number" name="min_price" class="form-control mb-2" placeholder="Min price"
+                        value="<?= htmlspecialchars($_GET['min_price'] ?? '') ?>" >
+
+                    <input type="number" name="max_price" class="form-control mb-3" placeholder="Max price"
+                        value="<?= htmlspecialchars($_GET['max_price'] ?? '') ?>">
+
+                   
+                    <input type="submit" class="btn btn-primary-custom w-100" value="Apply Filters">
+
+                    <!-- Reset -->
+                    <a href="products.php" class="btn btn-outline-secondary w-100 mt-2" >
+                        Reset
+                    </a>
+
+                </form>
+            </div>
+
+
+            <!--end new sidebar -->
+
+
+
+
+
+
+            <!-- old Sidebar Filters -->
+            <!-- <div class="col-lg-3 mb-4">
                 <div class="filter-panel">
                     <h5 class="fw-bold mb-3">Search</h5>
                     <div class="input-group mb-4">
@@ -93,7 +201,7 @@ $num2 = $stmt2->rowCount();
                         </li>
 
                         <?php
-
+    /*
                         if ($num2 > 0) {
                             while ($row2 = $stmt2->fetch()) {
 
@@ -107,7 +215,7 @@ $num2 = $stmt2->rowCount();
                         }
 
 
-
+*/
 
                         ?>
 
@@ -137,7 +245,13 @@ $num2 = $stmt2->rowCount();
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> -->
+
+
+            <!-- end old sidebar  -->
+
+
+
 
             <!-- Product Grid -->
             <div class="col-lg-9">
@@ -148,7 +262,7 @@ $num2 = $stmt2->rowCount();
                     if ($num > 0) {
 
 
-                        while ($row = $stmt->fetch()) {
+                        while ($row = $stmt3->fetch()) {
 
                             echo <<<EOT
 
