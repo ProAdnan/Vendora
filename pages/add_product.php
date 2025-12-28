@@ -97,7 +97,7 @@ $num = $stmt->rowCount();
 
 
     <div class="container py-5">
-        <form action="./create_process.php" method="post" enctype="multipart/form-data" >
+        <form action="./create_process.php" method="post" enctype="multipart/form-data">
             <div class="row g-5">
                 <!-- Image Upload Section -->
                 <div class="col-lg-5">
@@ -130,7 +130,7 @@ $num = $stmt->rowCount();
                         <h2 class="fw-bold m-0">Add New Product</h2>
 
 
-                        <input type="submit" name="submit" class="btn btn-primary-custom px-4" value="Publish Product" >
+                        <input type="submit" name="submit" class="btn btn-primary-custom px-4" value="Publish Product">
 
 
                     </div>
@@ -153,13 +153,13 @@ $num = $stmt->rowCount();
 
                                     while ($row = $stmt->fetch()) {
 
-                                       echo '<option value="' . $row['category_id'] . '">' . $row['category_name'] . '</option>';
+                                        echo '<option value="' . $row['category_id'] . '">' . $row['category_name'] . '</option>';
 
                                     }
 
 
                                     ?>
-                                    
+
 
                                 </select>
                             </div>
@@ -177,8 +177,25 @@ $num = $stmt->rowCount();
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label fw-bold small text-muted">Discount (%)</label>
-                                <input type="number" name="discount" class="form-control" placeholder="0%" value="0">
+                                <input 
+                                
+                                type="number" name="discount" id="discount" class="form-control" placeholder="0%"
+                                    min="0" max="100">
+
+                                    
                             </div>
+
+                            <!-- Hidden date fields -->
+                            <div class="col-md-6 mt-3 d-none" id="discountDates">
+                                <label class="form-label fw-bold small text-muted">Discount Start Date</label>
+                                <input type="date" name="discount_start" id="discount_start" class="form-control">
+                            </div>
+
+                            <div class="col-md-6 mt-3 d-none" id="discountDates2">
+                                <label class="form-label fw-bold small text-muted">Discount End Date</label>
+                                <input type="date" name="discount_end" id="discount_end" class="form-control">
+                            </div>
+
                         </div>
 
                         <div class="mb-3">
@@ -188,7 +205,7 @@ $num = $stmt->rowCount();
                         </div>
 
                         <div class="form-check text-muted small">
-                            <input class="form-check-input" type="checkbox" id="feature" name="is_featured"  >
+                            <input class="form-check-input" type="checkbox" id="feature" name="is_featured">
                             <label class="form-check-label" for="feature">Make this product featured on homepage</label>
                         </div>
 
@@ -200,6 +217,45 @@ $num = $stmt->rowCount();
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+
+
+
+    <script>
+        const discountInput = document.getElementById('discount');
+        const startDate = document.getElementById('discountDates');
+        const endDate = document.getElementById('discountDates2');
+        const startInput = document.getElementById('discount_start');
+        const endInput = document.getElementById('discount_end');
+
+        discountInput.addEventListener('input', function () {
+            if (this.value && this.value > 0) {
+                // Show dates
+                startDate.classList.remove('d-none');
+                endDate.classList.remove('d-none');
+
+                // Enable inputs
+                startInput.disabled = false;
+                endInput.disabled = false;
+            } else {
+                // Hide dates
+                startDate.classList.add('d-none');
+                endDate.classList.add('d-none');
+
+                // Disable + clear inputs (important)
+                startInput.value = '';
+                endInput.value = '';
+                startInput.disabled = true;
+                endInput.disabled = true;
+            }
+        });
+
+        // Disable dates by default (important for POST)
+        startInput.disabled = true;
+        endInput.disabled = true;
+    </script>
+
+
     <script>
         // Simple script to show localized preview if user selects file (just adds name for visual feedback)
         const fileInput = document.getElementById('fileInput');
@@ -213,6 +269,11 @@ $num = $stmt->rowCount();
             }
         });
     </script>
+
+
+
+
+
 </body>
 
 </html>

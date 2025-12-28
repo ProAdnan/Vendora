@@ -45,7 +45,7 @@ CREATE TABLE products (
     is_featured BOOLEAN,
 
     FOREIGN KEY (category_id) REFERENCES categories(category_id)
-);z
+);
 
 CREATE TABLE orders (
     order_id INT AUTO_INCREMENT PRIMARY KEY,
@@ -112,11 +112,14 @@ CREATE TABLE cart (
     FOREIGN KEY (product_id) REFERENCES products(product_id)
 );
 
+
 CREATE TABLE discounts (
     discount_id INT AUTO_INCREMENT PRIMARY KEY,
-    product_id INT,
-    discount_percentage INT,
+    product_id INT NOT NULL,
+    discount INT NOT NULL,
     start_date DATE,
     end_date DATE,
+
     FOREIGN KEY (product_id) REFERENCES products(product_id)
+        ON DELETE CASCADE
 );

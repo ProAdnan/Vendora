@@ -158,6 +158,8 @@ $num = $stmt3->rowCount();
 
                         ?>
 
+                        <a href="./discounts.php"  class="text-decoration-none text-danger">Discounts</a>
+
                     <!-- Price Range -->
                     <h5 class="fw-bold mt-4 mb-3">Price Range</h5>
 

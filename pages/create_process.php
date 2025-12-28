@@ -34,7 +34,7 @@ if (isset($_POST['submit'])) {
     } else {
 
         die('Price must set !');
-        
+
     }
 
 
@@ -116,21 +116,36 @@ if (isset($_POST['submit'])) {
 
     move_uploaded_file($file['tmp_name'], "./../assets/img/" . $path_name);
 
-    $image_path= $path_name;
+    $image_path = $path_name;
 
 
     $is_featured = isset($_POST['is_featured']) ? 1 : 0;
 
-    
+
 
 
     if (!empty($product_name) && !empty($price) && !empty($product_description)) {
 
+
+
         $product = new Product();
 
-        $result = $product->create($product_name, $price, $quantity, $product_description, $category_id, $image_path,$is_featured);
 
-        if (!$result) {
+        $product_id = $product->create($product_name, $price, $quantity, $product_description, $category_id, $image_path, $is_featured);
+
+
+        if (!empty($_POST['discount'])) {
+
+            $discount = (int) $_POST['discount'];
+            $start = $_POST['discount_start'] ?? null;
+            $end = $_POST['discount_end'] ?? null;
+
+            $product->addDiscount($product_id, $discount, $start, $end);
+        }
+
+
+
+        if (!$product_id) {
 
             die('Failed to create product');
 

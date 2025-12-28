@@ -48,6 +48,13 @@ $cat_name = $product->get_single_categoty($single_product['category_id']);
 
 
 
+$discount = $product->read_all_discounts();
+
+
+$dis_nums = $discount->rowCount();
+
+
+
 
 ?>
 
@@ -100,6 +107,44 @@ $cat_name = $product->get_single_categoty($single_product['category_id']);
 
     ?>
 
+    <?php
+
+    if ($dis_nums > 0) {
+
+        while ($dis_row = $discount->fetch()) {
+
+            if ($dis_row['product_id'] == $single_product['product_id']) {
+
+                echo <<<EOT
+
+<div style="width: 100%;height: 2px; background-color: #dc3545;position: relative;margin: 20px 0;">
+
+
+    <span style="position: absolute;top: -10px;left: 50%;transform: translateX(-50%);background: #fff;padding: 0 10px;font-size: 12px;color: #dc3545;font-weight: bold;">
+        {$dis_row['discount']}% Discount on this product
+    </span>
+
+
+</div>
+
+
+
+
+EOT;
+
+            }
+
+        }
+
+
+    }
+
+
+
+    ?>
+
+
+
 
     <div class="container py-5">
         <div class="row g-5">
@@ -112,6 +157,9 @@ $cat_name = $product->get_single_categoty($single_product['category_id']);
 
                 </div>
             </div>
+
+
+
 
             <!-- Product Info -->
             <div class="col-lg-6">

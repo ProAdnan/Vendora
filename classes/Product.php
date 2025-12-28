@@ -27,21 +27,13 @@ class Product
 
     public function create($product_name, $price, $quantity, $product_description, $category_id, $image_path, $is_featured)
     {
-
-        // if ($table == "products") {
-
         $sql = "INSERT INTO {$this->table}
-
-            (product_name, price, quantity, product_description, category_id,image_path,is_featured)
-
+            (product_name, price, quantity, product_description, category_id, image_path, is_featured)
             VALUES (:name, :price, :quantity, :description, :category, :image_path, :is_featured)";
-
-
 
         $stmt = $this->db->prepare($sql);
 
-
-        return $stmt->execute([
+        $stmt->execute([
             ':name' => $product_name,
             ':price' => $price,
             ':quantity' => $quantity,
@@ -52,40 +44,42 @@ class Product
         ]);
 
 
-
-        //         } elseif ($table == "discounts") {
-
-        //             $discount;
-
-        // $sql = "INSERT INTO {$table}
-
-        //             (product_name, price, quantity, product_description, category_id)
-
-        //             VALUES (:name, :price, :quantity, :description, :category) where product_id=";
+        return $this->db->lastInsertId();
+    }
 
 
 
-        //             $stmt = $this->db->prepare($sql);
+    public function addDiscount($product_id, $discount, $start, $end)
+    {
+        $sql = "INSERT INTO discounts (product_id, discount, start_date, end_date)
+            VALUES (:pid, :discount, :start, :end)";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([
+            ':pid' => $product_id,
+            ':discount' => $discount,
+            ':start' => $start,
+            ':end' => $end
+        ]);
+    }
 
 
-        //             return $stmt->execute([
-//                 ':name' => $product_name,
-//                 ':price' => $price,
-//                 ':quantity' => $quantity,
-//                 ':description' => $product_description,
-//                 ':category' => $category_id
-//             ]);
+    public function read_all_discounts(){
 
+        $query = "SELECT * FROM discounts";
 
+        $stmt = $this->db->prepare($query);
 
+        $stmt->execute();
 
-        //         }
-
-
+        return $stmt; // Returns a PDOStatement object
 
 
 
     }
+
+
+
+
 
     public function readAll()
     {
