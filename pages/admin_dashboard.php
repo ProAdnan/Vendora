@@ -22,8 +22,6 @@ $number_of_users = $product->num_of_users();
 
 $all_users = $product->read_all_users();
 
-
-
 $all_products = $product->readAll();
 
 $num_of_products = $all_products->rowCount();
