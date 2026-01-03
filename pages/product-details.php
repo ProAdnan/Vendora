@@ -150,13 +150,20 @@ EOT;
         <div class="row g-5">
             <!-- Product Image -->
             <div class="col-lg-6">
-                <div class="card card-custom border-0 p-3">
+                <div class="img-frame">
+                    <div class="card card-custom border-0 p-3">
 
-                    <img src="./../assets/img/<?= htmlspecialchars($single_product['image_path']) ?>"
-                        class="img-fluid rounded" alt="Product Image">
 
+                        <img src="./../assets/img/<?= htmlspecialchars($single_product['image_path']) ?>"
+                            class="img-fluid rounded" alt="Product Image">
+
+
+                    </div>
                 </div>
             </div>
+
+
+
 
 
 
@@ -180,7 +187,7 @@ EOT;
                 </p>
 
                 <div class="d-flex gap-3 mb-4">
-                    <input type="number" class="form-control w-25 text-center" value="1" min="1">
+                    <input type="number" class="form-control text-center" style="width:70px;" value="1" min="1">
                     <button class="btn btn-primary-custom flex-grow-1"
                         onclick="window.location.href='./cart.php?id={$single_product['product_id']}'">Add
                         to

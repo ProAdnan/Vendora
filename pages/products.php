@@ -5,12 +5,24 @@ require_once __DIR__ . './../classes/Database.php';
 require_once __DIR__ . './../classes/Product.php';
 
 
+if (isset($_GET['search'])) {
+
+    $search = $_GET['search'];
+
+} else {
+
+    $search = '';
+}
+
+
 
 $product = new Product();
 
 
 //$stmt = $product->readAll();
 //$num = $stmt->rowCount();
+
+
 
 
 
@@ -107,7 +119,7 @@ $num = $stmt3->rowCount();
                     <h5 class="fw-bold mb-3">Search</h5>
                     <div class="input-group mb-4">
                         <input type="text" name="search" value="<?= htmlspecialchars($_GET['search'] ?? '') ?>"
-                            class="form-control" placeholder="Search product...">
+                            class="form-control" placeholder="Search product..." value="<?= $search; ?>">
                         <!-- <button class="btn btn-primary-custom" type="submit">
                             <i class="bi bi-search"></i>
                         </button> -->

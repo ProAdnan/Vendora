@@ -36,9 +36,9 @@ $num_of_orders = $all_orders->rowCount();
 
 
 
-$orders_users_join= $product->get_user_with_order();
+$orders_users_join = $product->get_user_with_order();
 
-$nums_orders_users= $orders_users_join->rowCount();
+$nums_orders_users = $orders_users_join->rowCount();
 
 
 
@@ -86,6 +86,43 @@ $nums_orders_users= $orders_users_join->rowCount();
             .main-content {
                 margin-left: 0;
             }
+        }
+
+
+
+
+
+
+        table {
+            font-family: Arial, Helvetica, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+
+           
+        }
+
+        td,
+        th {
+            border: 1px solid #ddd;
+            padding: 8px;
+             text-align: center;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        tr:hover {
+            background-color: #ddd;
+        }
+
+        th {
+            padding-top: 12px;
+            padding-bottom: 12px;
+            text-align: left;
+            background-color: #04AA6D;
+            color: white;
+            text-align: center;
         }
     </style>
 </head>
@@ -224,6 +261,26 @@ $nums_orders_users= $orders_users_join->rowCount();
 
                         <?php
                         if ($num_of_products > 0) {
+                            echo <<<EOT
+
+<table>
+
+
+                            <thead>
+                                <tr>
+
+                                    <th>id</th>
+                                    <th>Image</th>
+                                    <th>name</th>
+                                    <th>price</th>
+                                    <th colspan="3">actions</th>
+
+                                </tr>
+                            </thead>
+
+                            <tbody>
+EOT;
+
 
 
                             while ($product = $all_products->fetch()) {
@@ -231,31 +288,63 @@ $nums_orders_users= $orders_users_join->rowCount();
 
                                 echo <<<EOT
 
-                        <div class="col-md-4 col-lg-3">
-                            <div class="card card-custom h-100">
-                                <img src="./../assets/img/{$product['image_path']}"
-                                    class="card-img-top" alt="Product" style="height: 180px;">
-                                <div class="card-body">
-                                    <h6 class="fw-bold">{$product['product_name']}</h6>
-                                    <p class="text-primary-custom fw-bold">{$product['price']}$</p>
-                                    <div class="d-flex gap-2">
-                                             <a href="./product-details.php?id={$product['product_id']}&cat={$product['category_id']}" class="btn btn-sm btn-outline-secondary w-50">View</a>
 
-                                             <a href="./edit_product.php?id={$product['product_id']}&cat={$product['category_id']}" class="btn btn-sm btn-outline-secondary w-50">Edit</a>
+ <tr>
+                                    <td>
+                                        {$product['product_id']}
+                                    </td>
+                                    <td>
+                                        <img width="110px" height="auto" src="./../assets/img/{$product['image_path']}"
+                                            alt="" class="rounded">
+                                    </td>
 
-                                            <a href="./confirm_delete.php?id={$product['product_id']}" class="btn btn-sm btn-outline-danger w-50">Delete</a>
+                                    <td>
+                                        {$product['product_name']}
+
+                                    </td>
+
+                                    <td>
+                                        {$product['price']}
+                                    </td>
+
+                                    <td>
+                                        <a href="./product-details.php?id={$product['product_id']}&cat={$product['category_id']}"
+                                            class="btn btn-sm btn-outline-secondary ">View</a>
+
+                                    </td>
+
+                                    <td>
+                                        <a href="./edit_product.php?id={$product['product_id']}&cat={$product['category_id']}"
+                                            class="btn btn-sm btn-outline-secondary">Edit</a>
+
+                                    </td>
+
+                                    <td>
+                                        <a href="./confirm_delete.php?id={$product['product_id']}"
+                                            class="btn btn-sm btn-outline-danger">Delete</a>
+
+                                    </td>
+
+                                </tr>
 
 
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+
 
 
 
 EOT;
 
                             }
+
+                            echo <<<EOT
+
+                            </tbody>
+
+                        </table>
+
+
+EOT;
+
 
                         } else {
 
@@ -267,6 +356,8 @@ EOT;
 
 
                         ?>
+
+
 
 
 
@@ -406,9 +497,9 @@ EOT;
 
                             while ($orders = $orders_users_join->fetch()) {
 
-                                
 
-                                        echo <<<EOT
+
+                                echo <<<EOT
 
 <div class="col-12">
                             <div class="card card-custom p-3 border-0">
@@ -430,8 +521,8 @@ EOT;
                         </div>
 
 EOT;
-                                    
-                                
+
+
 
                             }
 

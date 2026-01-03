@@ -7,6 +7,10 @@ require_once __DIR__ . './classes/Product.php';
 
 
 
+
+
+
+
 $product = new Product();
 
 
@@ -35,133 +39,36 @@ $num = $stmt->rowCount();
     <?php
 
 
-    if (isset($_SESSION["user_type"])) {
-
-        if ($_SESSION["user_type"] == "admin") {
-
-            ?>
-
-            <nav class="navbar navbar-expand-lg sticky-top">
-                <div class="container">
-                    <a class="navbar-brand" href="./index.php">Vendora.</a>
-                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAdmin">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-
-                    <div class="collapse navbar-collapse" id="navbarNavAdmin">
-                        <ul class="navbar-nav ms-auto align-items-center">
-                            <li class="nav-item"><a class="nav-link" href="./pages/products.php">Products</a></li>
-                            <li class="nav-item"><a class="nav-link" href="#services">Services</a></li>
-                            <li class="nav-item ms-lg-3">
-                                <a href="./pages/admin_dashboard.php" class="btn btn-primary-custom">Dashboard</a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </nav>
 
 
-            <?php
-        } elseif ($_SESSION["user_type"] == "user") {
+    if (!isset($_SESSION['user_type'])) {
+
+        include './includes/guest_nav_main.php';
+
+
+    } else {
+
+        switch ($_SESSION['user_type']) {
+            case 'admin':
+                include './includes/admin_nav_main.php';
+                break;
+
+            case 'user':
+                include './includes/user_nav_main.php';
+                break;
 
 
 
-
-
-            ?>
-            <nav class="navbar navbar-expand-lg sticky-top">
-                <div class="container">
-                    <a class="navbar-brand" href="./index.php">Vendora.</a>
-                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavUser">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-
-                    <div class="collapse navbar-collapse" id="navbarNavUser">
-                        <ul class="navbar-nav ms-auto align-items-center">
-                            <li class="nav-item"><a class="nav-link" href="./pages/products.php">Products</a></li>
-                            <li class="nav-item"><a class="nav-link" href="#services">Services</a></li>
-                            <li class="nav-item"><a class="nav-link" href="#contact">Contact Us</a></li>
-                            <li class="nav-item ms-lg-3 dropdown">
-                                <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="userDropdown"
-                                    role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <i class="bi bi-person-circle fs-4 me-2"></i>
-                                </a>
-                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-                                    <li><a class="dropdown-item" href="./pages/profile.php">Profile</a></li>
-                                    <li><a class="dropdown-item" href="./pages/orders.php">My Cart</a></li>
-                                    <li>
-                                        <hr class="dropdown-divider">
-                                    </li>
-                                    <li><a class="dropdown-item text-danger" href="./pages/loginProcess.php">Logout</a></li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </nav>
-
-
-            <?php
-
-        } else { ?>
-
-
-
-            <nav class="navbar navbar-expand-lg sticky-top">
-                <div class="container">
-                    <a class="navbar-brand" href="./index.php">Vendora.</a>
-                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-
-                    <div class="collapse navbar-collapse" id="navbarNav">
-                        <ul class="navbar-nav ms-auto align-items-center">
-                            <li class="nav-item"><a class="nav-link" href="./pages/products.php">Products</a></li>
-                            <li class="nav-item"><a class="nav-link" href="#services">Services</a></li>
-                            <li class="nav-item"><a class="nav-link" href="#contact">Contact Us</a></li>
-                            <li class="nav-item ms-lg-3">
-                                <a href="./pages/login.php" class="btn btn-outline-custom me-2">Login</a>
-                                <a href="./pages/signup.php" class="btn btn-primary-custom">Sign Up</a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </nav>
-
-            <?php
         }
-
-
-        ?>
-
-
-        <?php
-    } else { ?>
-
-
-        <nav class="navbar navbar-expand-lg sticky-top">
-            <div class="container">
-                <a class="navbar-brand" href="./index.php">Vendora.</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav ms-auto align-items-center">
-                        <li class="nav-item"><a class="nav-link" href="./pages/products.php">Products</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#services">Services</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#contact">Contact Us</a></li>
-                        <li class="nav-item ms-lg-3">
-                            <a href="./pages/login.php" class="btn btn-outline-custom me-2">Login</a>
-                            <a href="./pages/signup.php" class="btn btn-primary-custom">Sign Up</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-        <?php
-
     }
+
+
+
+
+
+
+
+
 
     ?>
 
@@ -272,11 +179,11 @@ $num = $stmt->rowCount();
 
                 <?php
                 if ($num > 0) {
-                    
+
 
                     while ($row = $stmt->fetch()) {
 
-                        $cat_name= $product->get_single_categoty($row['category_id']);
+                        $cat_name = $product->get_single_categoty($row['category_id']);
 
                         echo <<<EOT
 
